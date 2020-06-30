@@ -1,0 +1,151 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf_old.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/05/25 12:18:57 by jpizarro          #+#    #+#             */
+/*   Updated: 2020/06/24 19:14:20 by jpizarro         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ft_printf.h"
+// BORRAR
+    #include <stdio.h>
+//
+
+int    ft_printf_error(const char **str)
+{
+    char    *err_fmt1;
+    char    *err_fmt2;
+    char    *err_fmt3;
+
+    err_fmt1 = "\n----- Error: the \'";
+    err_fmt2 = "\' in \"";
+    err_fmt3 = "\" is not supported. -----\n";
+    ft_putstr_fd(err_fmt1, 2);
+    write (2, *str, 1);
+    while (**(str) != '%')
+        (*str)--;
+    ft_putstr_fd(err_fmt2, 2);
+    while (**str && **str != ' ')
+        write(2, (*str)++, 1);
+    ft_putstr_fd(err_fmt3, 2);
+    return (-1);
+}
+
+int     ft_printf(const char *str, ...)
+{
+    va_list     args;
+    char        c;
+    char        *s;
+    t_n         *n;
+
+    n = ft_newn(NULL, 0);
+    s = NULL;
+    va_start(args, str);
+    while (*str)
+    {
+        if (*str != '%')
+        {
+            c = *str;
+            s = ft_strdup(&c);
+        }
+        else if (*(++str) == '%')
+        {
+            c = *str;
+            s = ft_strdup(&c);
+        }
+        else if (*str == '0' || *str == '-')
+        {
+            //INCLUIR FLAGS
+            ++str;
+        }
+        else if (*str == 'c')
+        {
+            c = (char)va_arg(args, int);
+            if (ft_isprint(c))
+                s = ft_strdup(&c);
+            else
+                ft_printf_error(&str); // modificar la funcion errores para que pueda decir que c no es un char imprimible
+        }
+        else if (*str == 's')
+            s = ft_strdup(va_arg(args, char*));
+        else if (*str == 'p')
+            s = ft_litoax((unsigned long int)va_arg(args, void*), 'p');
+        else if (*str == 'd' || *str == 'i')
+            s = ft_itoa(va_arg(args, int));
+        else if (*str == 'u')
+            s = ft_uitoa((unsigned int)va_arg(args, int));
+        else if (*str == 'x' || *str == 'X')
+            s = ft_itoax((unsigned int)va_arg(args, int), *str);
+        else if (*str == 'f' || *str == 'e' || *str == 'g')
+            s = ft_flotoa(va_arg(args, double), 6, *str);
+        else if (*str == 'n')
+        {
+            n->arg = va_arg(args, int*);
+            n->next = ft_newn(n, n->nchr);
+            n = n->next;
+        }
+        else
+            return (ft_printf_error(&str));
+        if (s)
+        {
+            n->nchr += ft_strlen(s);
+            ft_putstr_fd(s, 1);
+            free(s);
+            s = NULL;
+        }
+        str++;
+    }
+    ft_asignn(n);
+    va_end(args);
+    return (0);
+}
+
+int main(void)
+{   
+    char c = 'J';
+    int i = -2148;
+    int u = 4295;
+    char *hey = "hey!!";
+    int n1 = 0;
+    int n2 = 0;
+    double f = 179e-3;
+    printf("sizeof float: %ld, sizeof double: %ld, sizeof long double: %ld\n", sizeof(float), sizeof(double), sizeof(long double));
+    printf("%%c=%c %%s=%s%n %%p=%p %%d=%d t%%i=%i %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f);
+    printf("n1=%d n2=%d\n", n1, n2);
+    n1 = 0;
+    n2 = 0;
+    ft_printf("%%c=%c %%s=%s%n %%p=%p %%d=%d t%%i=%i %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f);
+    printf("n1=%d n2=%d\n", n1, n2);
+//  simple_printf("dcff", 3, 'a', 1.999, 42.5);
+//  printf("/./%010d/./\n", i);
+}
+
+/*
+#include <stdarg.h> //  Included so we can use va_star(), va_end() va_copy() and va_list
+ 
+void simple_printf(const char* fmt, ...)
+{
+    va_list args;   //  va_list declaration, named args
+    va_start(args, fmt);    //  iniciates the list with fmt as the last argument
+ 
+    while (*fmt != '\0') {      //  traverses the array fmt one char at a time
+        if (*fmt == 'd') {      //  if 'd' is found, the argument is a decimal integer
+            int i = va_arg(args, int);      //  calls the next argument from the variadic list and stores it in a variable the type of the arg
+            printf("%d\n", i);
+        } else if (*fmt == 'c') {       //  if 'c' is found, the argument is a character
+            // A 'char' variable will be promoted to 'int'
+            // A character literal in C is already 'int' by itself
+            int c = va_arg(args, int);      // 
+            printf("%c\n", c);
+        } else if (*fmt == 'f') {
+            double d = va_arg(args, double);
+            printf("%f\n", d);
+        }
+        ++fmt;
+    }
+    va_end(args);
+}*/
