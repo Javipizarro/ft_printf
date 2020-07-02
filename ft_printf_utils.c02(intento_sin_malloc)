@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*   ft_printf_utils.c02(intento_sin_malloc)            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 08:46:37 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/02 03:52:56 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include "ft_printf.h"
 
 /*
-**	Allocates (with malloc(3)) and returns a string representing the
-**	integer received as 'n' transformed to unsigned hexa as x or X
+**	Returns a string representing the integer received as
+**	'n' transformed to unsigned hexa as x or X
 **	would do in printf or NULL if the allocation fails.
 **	Negative numbers are also handled.
 */
@@ -45,12 +45,12 @@ char	*ft_itoax(unsigned int n, char x)
 	}
 	if (i == 8)
 		ret[--i] = base[0];
-	return (ft_strdup(&ret[i]));
+	return (ft_strshorten(&ret[i]));
 }
 
 /*
-**	Allocates (with malloc(3)) and returns a string representing the
-**	long integer received as 'n' transformed to unsigned hexa as lx or lX
+**	Returns a string representing the long integer received
+**	as 'n' transformed to unsigned hexa as lx or lX
 **	would do in printf or NULL if the allocation fails.
 **	Negative numbers are also handled.
 */
@@ -77,13 +77,12 @@ char	*ft_litoax(unsigned long int n, char x)
 	if (i == 18)
 		ret[--i] = base[0];
 	if (x == 'p')
-		return (ft_strjoin("0x", &ret[i]));
-	return (ft_strdup(&ret[i]));
+		return (ft_stradd("0x", &ret[i]));
+	return (ft_strshorten(&ret[i]));
 }
 
 /*
-**	Allocates (with malloc(3)), creates fresh t_convspecs
-**	structure, ready to work with it.
+**	Creates fresh t_convspecs structure, ready to work with it.
 **	Returns a pointer to the created element.
 */
 
@@ -94,18 +93,19 @@ t_convspecs	*ft_csinit(void)
 	if (!(new = malloc(sizeof(t_convspecs))))
 		return (NULL);
 	new->sign = 0;
-	new->adj = 0;
-	new->padd = ' ';
+	new->adjus = 0;
+	new->padd = 0;
 	new->alt = 0;
 	new->width = 0;
 	new->pre = -1;
 	new->len = 0;
-	new->spec = 0;
+//	new->hh = 0;
+//	new->spec = 0;
 	return (new);
 }
 
 /*
-**	Allocates (with malloc(3)) and creates a new t_n double linked list
+**	Creates a new t_n double linked list
 **	object in the space pointed by 'prev', and stores the number 'n'
 **	of character read in nchr.
 */
@@ -192,7 +192,7 @@ char	*ft_exp(int exp, char spec)
 	int		j;
 
 	if (spec == 'f' || spec == 'j')
-		return (ft_strdup(""));
+		return ("");
 	s[0] = 'e';
 	s[1] = exp < 0 ? '-' : '+';
 	exp = exp < 0 ? -(exp) : exp;
@@ -204,7 +204,7 @@ char	*ft_exp(int exp, char spec)
 		s[--i] = (char)((exp % 10) + 48);
 		exp /= 10;
 	}
-	return (ft_strdup(s));
+	return (ft_strshorten(s));
 }
 
 long double		ft_dv(int exp)
@@ -246,7 +246,7 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 		s[i + 1] = s[i];
 	s[dot] = '.';
 	s[len] = 0;
-	return (ft_strdup(s[0] == '0' ? &s[1] : s));
+	return (ft_strshorten(s[0] == '0' ? &s[1] : s));
 }
 
 char	*ft_flotoa(long double f, short int pre, char spec)
@@ -256,7 +256,7 @@ char	*ft_flotoa(long double f, short int pre, char spec)
 	short int	len;
 
 	if (spec != 'e' && spec != 'f' && spec != 'g')
-		return (ft_strdup("\n\n\t/./flotoa spec ERROR/./\n\n"));
+		return ("\n\n\t/./flotoa spec ERROR/./\n\n");
 	exp = 0;
 	ff = f < 0 ? -f : f;
 	while ((ff >= 10 && ++exp) || (ff < 1 && --exp))
@@ -274,7 +274,7 @@ char	*ft_flotoa(long double f, short int pre, char spec)
 	len = pre + 3 + (f < 0 ? 1 : 0);
 	len += spec == 'f' && exp > 0 ? exp : 0;
 	len -= spec == 'j' && exp < 0 ? exp : 0;
-	return (ft_sjofree(ft_base(f, len, spec, exp), ft_exp(exp, spec), 3));
+	return (ft_stradd(ft_base(f, len, spec, exp), ft_exp(exp, spec)));
 }
 
 /*

@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_chrpos.c                                        :+:      :+:    :+:   */
+/*   ft_charlloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/25 00:46:27 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/05/22 13:11:33 by jpizarro         ###   ########.fr       */
+/*   Created: 2020/07/02 06:08:15 by jpizarro          #+#    #+#             */
+/*   Updated: 2020/07/02 06:37:53 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
 /*
-**	Finds the first ocurrence of the character 'c' in the string 'str'.
-**	Returns the possition of 'c' in "str" (NOT the index of 'c' in "str"),
-**	or 0 if 'c' is not found.
+**	Allocates enough space in memory for a string 'len' chars long,
+**  The in the allocated memory, 'len' bytes are filled with the value 'c',
+**  and the last one, with the value 0.
+**  Returns a pointer to the allocated memory.
 */
 
-int		ft_chrpos(char const *s, char c)
-{
-	int i;
+#include "libft.h"
 
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
-	return (s[i] ? ++i : 0);
+void	*ft_charlloc(size_t len, char c)
+{
+	void *s;
+
+	if (!(s = malloc(len + 1)))
+		return (NULL);
+	ft_bchar(s, len, c);
+	return (s);
 }
