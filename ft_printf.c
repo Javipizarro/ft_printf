@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 18:55:51 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/02 20:39:45 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 	(cs->spec == 'c' && (!(c[0] = (char)va_arg(args, int)) ? (*n)->nchr++ : 1)))
 		*s = ft_strdup(c);
 	else if (cs->spec == 's')
-		*s = ft_strdup(va_arg(args, char*));
+		*s = ft_spec_s(va_arg(args, char*), cs);
 	else if (cs->spec == 'p' && !(cs->sign = 0))
 		*s = ft_litoax((unsigned long int)va_arg(args, void*), 'p');
 	else if (cs->spec == 'd' || cs->spec == 'i')
@@ -139,8 +139,8 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 		ft_saven(n, args);
 	else
 		return (-1);
-	cs->spec == 'c' || cs->spec == 's' ? cs->padd == ' ' : 1;
-	cs->spec == 'c' || cs->spec == 's' ? cs->sign == 0 : 1;
+	cs->spec == 'c' || cs->spec == 's' ? cs->padd = ' ' : 1;
+	cs->spec == 'c' || cs->spec == 's' ? cs->sign = 0 : 1;
 	return (*s ? ft_builder(cs, s) : 0);
 }
 
@@ -191,10 +191,10 @@ int		main(void)
 	int n2 = 0;
 	double f = 179e-3;
 	printf("sizeof float: %ld, sizeof double: %ld, sizeof long double: %ld\n", sizeof(float), sizeof(double), sizeof(long double));
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.3s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+06i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
+	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.0s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+6i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
 	printf("n1=%d n2=%d\n", n1, n2);
 	n1 = 0;
 	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+06i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
+	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.-1s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+6i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
 	ft_printf("n1=%d n2=%d\n", n1, n2);
 }

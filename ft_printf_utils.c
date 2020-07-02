@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 08:46:37 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/02 20:38:55 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,31 @@
 ///
 
 #include "ft_printf.h"
+
+/*
+**	Allocates sufficient memory for a copy of the string 'str' once applied
+**	a max lenth pre if suitable, does the copy,	and returns a pointer to it.
+**	The pointer may subsequently be used as an argument to the function free(3).
+*/
+
+char	*ft_spec_s(char *str, t_convspecs *cs)
+{
+	int		len;
+	char	*s;
+
+	if (cs->pre <= 0)
+	{
+		cs->width -= cs->pre;
+		return (ft_strdup(""));
+	}
+	len = ft_strlen(str);
+	len = (cs->pre < len ? cs->pre : len);
+	if (!(s = malloc(len + 1)))
+		return (NULL);
+	ft_memcpy(s, str, len + 1);
+	s[len] = 0;
+	return (s);
+}
 
 /*
 **	Allocates (with malloc(3)) and returns a string representing the
@@ -98,7 +123,7 @@ t_convspecs	*ft_csinit(void)
 	new->padd = ' ';
 	new->alt = 0;
 	new->width = 0;
-	new->pre = -1;
+	new->pre = INT_MAX;
 	new->len = 0;
 	new->spec = 0;
 	return (new);

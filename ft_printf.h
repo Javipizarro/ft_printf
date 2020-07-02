@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 08:54:06 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/02 20:18:31 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
+# include <limits.h>
 # include "./libft/libft.h"
 
 typedef struct		s_n
@@ -44,5 +45,6 @@ char		*ft_litoax(unsigned long int n, char x);
 t_n			*ft_newn(t_n *prev, int nchr);
 int			ft_printf(const char *str, ...);
 void		ft_saven(t_n **n, va_list args);
+char		*ft_spec_s(char *str, t_convspecs *cs);
 
 #endif
