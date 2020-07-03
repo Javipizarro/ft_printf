@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/03 19:08:01 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/03 23:13:55 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,14 +83,16 @@ void	ft_width_pre(const char **str, t_convspecs *cs, va_list args)
 
 void	ft_lenth(const char **str, t_convspecs *cs)
 {
-	if (**str == 'l' && (*str)++)
+	if (**str == 'L' && (*str)++)
+			cs->len = 'L';
+	else if (**str == 'l' && (*str)++)
 	{
 		if (**str == 'l' && (*str)++)
 			cs->len = 'L';
 		else
 			cs->len = 'l';
 	}
-	if (**str == 'h' && (*str)++)
+	else if (**str == 'h' && (*str)++)
 	{
 		if (**str == 'h' && (*str)++)
 			cs->len = 'H';
@@ -117,37 +119,49 @@ int		ft_builder(t_convspecs *cs, char **s)
 
 int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 {
-//	char	c[2];
-//
 	cs->spec == 'c' || cs->spec == 's' || cs->pre >= 0 ? cs->padd = ' ' : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'x' || cs->spec == 'X' ||
 	cs->spec == 'p' || cs->spec == 'u' ? cs->sign = 0 : 1;
-//	c[1] = 0;
-//	if ((cs->spec == '%' && (c[0] = '%')) ||
-//	(cs->spec == 'c' && (!(c[0] = (char)va_arg(args, int)) ? (*n)->nchr++ : 1)))
-//		*s = ft_strdup(c);
-//	else if (cs->spec == 's')
-//		*s = ft_spec_s(va_arg(args, char*), cs);
-//	else if (cs->spec == 'd' || cs->spec == 'i')
-//		*s = ft_spec_di(va_arg(args, int), cs);
 	if (cs->spec == '%')
-		*s = ft_spec_cdi((int)cs->spec, cs);
+		*s = ft_spec_cu((unsigned int)cs->spec, cs);
 	else if (cs->spec == 's')
 		*s = ft_spec_s(va_arg(args, char*), cs);
-	else if (cs->spec == 'd' || cs->spec == 'i' || cs->spec == 'c')
-		*s = ft_spec_cdi(va_arg(args, int), cs);
-	else if (cs->spec == 'u')
-		*s = ft_spec_u((unsigned int)va_arg(args, int), cs);
-	else if (cs->spec == 'p' || cs->spec == 'x' || cs->spec == 'X')
+	else if ((cs->spec == 'u' && cs->len == 'H') || cs->spec == 'c')
+		*s = ft_spec_cu((unsigned char)va_arg(args, int), cs);
+	else if (cs->spec == 'u' && cs->len == 'h')
+		*s = ft_spec_cu((unsigned short int)va_arg(args, int), cs);
+	else if (cs->spec == 'u' && !cs->len)
+		*s = ft_spec_cu((unsigned int)va_arg(args, int), cs);
+	else if (cs->spec == 'u' && cs->len == 'l')
+		*s = ft_spec_cu((unsigned long int)va_arg(args, int), cs);
+	else if (cs->spec == 'u' && cs->len == 'L')
+		*s = ft_spec_cu((unsigned long long int)va_arg(args, int), cs);
+	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'H')
+		*s = ft_spec_di((signed char)va_arg(args, int), cs);
+	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'h')
+		*s = ft_spec_di((short int)va_arg(args, int), cs);
+	else if ((cs->spec == 'd' || cs->spec == 'i') && !cs->len)
+		*s = ft_spec_di((int)va_arg(args, int), cs);
+	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'l')
+		*s = ft_spec_di((long int)va_arg(args, int), cs);
+	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'L')
+		*s = ft_spec_di((long long int)va_arg(args, int), cs);
+	else if (cs->spec == 'p')
 		*s = ft_spec_px((unsigned long int)va_arg(args, void*), cs);
-//	else if (cs->spec == 'p' && !(cs->sign = 0))
-//		*s = ft_litoax((unsigned long int)va_arg(args, void*), 'p');
-//	else if ((cs->spec == 'x' || cs->spec == 'X') && !(cs->sign = 0))
-//		*s = ft_itoax((unsigned int)va_arg(args, int), cs->spec);
+	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'H')
+		*s = ft_spec_px((unsigned char)va_arg(args, int), cs);
+	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'h')
+		*s = ft_spec_px((unsigned short int)va_arg(args, int), cs);
+	else if ((cs->spec == 'x' || cs->spec == 'X') && !cs->len)
+		*s = ft_spec_px((unsigned int)va_arg(args, int), cs);
+	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'l')
+		*s = ft_spec_px((unsigned long int)va_arg(args, int), cs);
+	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'L')
+		*s = ft_spec_px((unsigned long long int)va_arg(args, int), cs);
 	else if (cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g')
 		*s = ft_flotoa(va_arg(args, double), 6, cs->spec);
 	else if (cs->spec == 'n')
-		ft_saven(n, args);
+		ft_saven(n, args/*, cs*/);
 	else
 		return (-1);
 	return (*s ? ft_builder(cs, s) : 0);
@@ -192,24 +206,33 @@ int		ft_printf(const char *str, ...)
 
 int		main(void)
 {   
-	char c = 'J';
-	int i = 2846;
-	unsigned int u = 4295;
-	char pre = 6;
-	char *hey = "hey!!no";
-	int n1 = 0;
-	int n2 = 0;
-	double f = 179e-3;
+	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
+	ft_printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
+	printf("i\t%%hhi=%hhi %%hi=%hi %%i=%i %%li=%li %%lli=%lli\n", SCHAR_MAX, SHRT_MAX, INT_MAX, LONG_MAX, LLONG_MAX);
+	ft_printf("i\t%%hhi=%hhi %%hi=%hi %%i=%i %%li=%li %%lli=%lli\n", SCHAR_MAX, SHRT_MAX, INT_MAX, LONG_MAX, LLONG_MAX);
+	printf("i\t%%hhi=%hhi %%hi=%hi %%i=%i %%li=%li %%lli=%lli\n", SCHAR_MIN, SHRT_MIN, INT_MIN, LONG_MIN, LLONG_MIN);
+	ft_printf("i\t%%hhi=%hhi %%hi=%hi %%i=%i %%li=%li %%lli=%lli\n", SCHAR_MIN, SHRT_MIN, INT_MIN, LONG_MIN, LLONG_MIN);
+	printf("x\t%%hhx=%hhx %%hx=%hx %%x=%x %%lx=%lx %%llx=%llx\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
+	ft_printf("x\t%%hhx=%hhx %%hx=%hx %%x=%x %%lx=%lx %%llx=%llx\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
 //	printf("sizeof float: %ld, sizeof double: %ld, sizeof long double: %ld\n", sizeof(float), sizeof(double), sizeof(long double));
 //	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%018p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%018p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+	char c = 'J';
+	int i = 2846;
+	unsigned int u = 4698;
+	int pre = 6;
+	char *hey = "hey!!no";
+	int n1 = 0;
+	int n2 = 0;
+	double f = 179e-3;
+
+	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 	printf("n1=%d n2=%d\n", n1, n2);
 	n1 = 0;
 	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%018p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 	ft_printf("n1=%d n2=%d\n", n1, n2);
 //	printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
 //	ft_printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
