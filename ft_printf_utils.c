@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/03 13:28:29 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/03 19:05:36 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 	char	*s;
 
 	if (cs->pre <= 0)
-	{
-		cs->width -= cs->pre;
+//	{
+//		cs->width -= cs->pre;
 		return (ft_strdup(""));
-	}
+//	}
 	len = ft_strlen(str);
 	len = (cs->pre < len ? cs->pre : len);
 	if (!(s = malloc(len + 1)))
@@ -42,23 +42,18 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 	return (s);
 }
 
-/*
-**	Allocates (with malloc(3)) and returns a string representing the 
-**	long long integer received as an argument or NULL if the allocation fails.
-**	If int is negative, the sign will be reflectec in the t_converspec
-**	cs->sign field.
-*/
-
-char	*ft_spec_di(long long int n, t_convspecs *cs)
+//	ft_spec_cdi ESTÁ EN FASE DE PRUEBAS!! para sustituir a ft_spec_di
+char	*ft_spec_cdi(long long int n, t_convspecs *cs)
 {
-	char	str[cs->pre > 20 ? cs->pre : 20];
+	char	str[cs->pre > 21 ? cs->pre : 21];
 	int		i;
 
-	cs->pre >= 0 ? cs->padd = ' ' : 1;
-	i = (cs->pre > 20 ? cs->pre : 20) - 1;
+//	cs->pre >= 0 ? cs->padd = ' ' : 1;	//	Es redundante, se puede quitar
+	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	str[i] = 0;
-	if (!n && cs->pre < 0)
-		str[--i] = '0';
+	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)n) >= 0)
+		return (ft_strdup(&str[i]));
+	!n && cs->pre < 0 ? str[--i] = '0' : 1;
 	if (n < 0 && cs->pre--)
 	{
 		cs->sign = '-';
@@ -70,6 +65,94 @@ char	*ft_spec_di(long long int n, t_convspecs *cs)
 		str[--i] = n % 10 + '0';
 		n /= 10;
 	}
+	return (ft_strdup(&str[i]));
+}
+/*
+**	Allocates (with malloc(3)) and returns a string representing the 
+**	long long integer received as an argument or NULL if the allocation fails.
+**	If int is negative, the sign will be reflectec in the t_converspec
+**	cs->sign field.
+*/
+/*	OBSOLETA?
+char	*ft_spec_di(long long int n, t_convspecs *cs)
+{
+	char	str[cs->pre > 21 ? cs->pre : 21];
+	int		i;
+
+//	cs->pre >= 0 ? cs->padd = ' ' : 1;	//	Es redundante, se puede quitar
+	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	str[i] = 0;
+	!n && cs->pre < 0 ? str[--i] = '0' : 1;
+	if (n < 0 && cs->pre--)
+	{
+		cs->sign = '-';
+		str[--i] = '0' - n % 10;
+		n /= -10;
+	}
+	while (cs->pre-- > 0 || n % 10 || n / 10)
+	{
+		str[--i] = n % 10 + '0';
+		n /= 10;
+	}
+	return (ft_strdup(&str[i]));
+}*/
+
+/*
+**	Allocates (with malloc(3)) and returns a string representing the unsigned
+**	long long integer received as an argument or NULL if the allocation fails.
+**	The sign will be reset (=0) in the t_converspec cs->sign field.
+*/
+
+char	*ft_spec_u(unsigned long long int n, t_convspecs *cs)
+{
+	char	str[cs->pre > 21 ? cs->pre : 21];
+	int		i;
+
+//	cs->sign = 0;	//	Es redundante, se puede quitar
+//	cs->pre >= 0 ? cs->padd = ' ' : 1;	//	Es redundante, se puede quitar
+	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	str[i] = 0;
+	!n && cs->pre < 0 ? str[--i] = '0' : 1;
+	while (cs->pre-- > 0 || n % 10 || n / 10)
+	{
+		str[--i] = n % 10 + '0';
+		n /= 10;
+	}
+	return (ft_strdup(&str[i]));
+}
+
+/*
+**	Allocates (with malloc(3)) and returns a string representing the
+**	long integer received as 'n' transformed to unsigned hexa as lx or lX
+**	would do in printf or NULL if the allocation fails.
+**	Negative numbers are also handled.
+*/
+
+char	*ft_spec_px(unsigned long long int n, t_convspecs *cs)
+{
+	char		str[cs->pre > 21 ? cs->pre : 21];
+	int			i;
+	char		*base;
+
+	if (cs->padd == '0' && (cs->spec == 'p' || cs->alt))
+	{
+		cs->pre = cs->pre < cs->width - 2 ? cs->width - 2 : cs->pre;
+		cs->width = 0;
+	}
+	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	base = cs->spec == 'X' ? "0123456789ABCDEF" : "0123456789abcdef";
+	str[i] = 0;
+	while (cs->pre-- > 0 || n % 16 || n / 16)
+	{
+		str[--i] = base[n % 16];
+		n /= 16;
+	}
+	if (i == 18)
+		str[--i] = base[0];
+	if (cs->spec == 'p' || (cs->spec == 'x' && cs->alt))
+		return (ft_strjoin("0x", &str[i]));
+	else if (cs->spec == 'X' && cs->alt)
+		return (ft_strjoin("0X", &str[i]));
 	return (ft_strdup(&str[i]));
 }
 
