@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 20:39:45 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/03 13:09:38 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,12 +125,12 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 		*s = ft_strdup(c);
 	else if (cs->spec == 's')
 		*s = ft_spec_s(va_arg(args, char*), cs);
-	else if (cs->spec == 'p' && !(cs->sign = 0))
-		*s = ft_litoax((unsigned long int)va_arg(args, void*), 'p');
 	else if (cs->spec == 'd' || cs->spec == 'i')
-		*s = ft_itoa(va_arg(args, int));
+		*s = ft_spec_di(va_arg(args, int), cs);
 	else if (cs->spec == 'u' && !(cs->sign = 0))
 		*s = ft_uitoa((unsigned int)va_arg(args, int));
+	else if (cs->spec == 'p' && !(cs->sign = 0))
+		*s = ft_litoax((unsigned long int)va_arg(args, void*), 'p');
 	else if ((cs->spec == 'x' || cs->spec == 'X') && !(cs->sign = 0))
 		*s = ft_itoax((unsigned int)va_arg(args, int), cs->spec);
 	else if (cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g')
@@ -184,17 +184,21 @@ int		ft_printf(const char *str, ...)
 int		main(void)
 {   
 	char c = 'J';
-	int i = 2148;
+	int i = 0;
 	int u = 4295;
-	char *hey = "hey!!";
+	char pre = 0;
+	char *hey = "hey!!no";
 	int n1 = 0;
 	int n2 = 0;
 	double f = 179e-3;
 	printf("sizeof float: %ld, sizeof double: %ld, sizeof long double: %ld\n", sizeof(float), sizeof(double), sizeof(long double));
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.0s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+6i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
+	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%p %%d=/./%+08.5d/./ %%i=/./%-+6.*i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, u, i, i, n1, f, f, f));
 	printf("n1=%d n2=%d\n", n1, n2);
 	n1 = 0;
 	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.-1s%n %%p=%p %%d=/./%+08d/./ %%i=/./%-+6i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, i, &n2, u, i, i, n1, f, f, f));
-	ft_printf("n1=%d n2=%d\n", n1, n2);
+	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%p %%d=/./%+08.5d/./ %%i=/./%-+6.*i/./ %n%%u=%u %%x=%x %%X=%X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, u, i, i, n1, f, f, f));
+	printf("n1=%d n2=%d\n", n1, n2);
+//	printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
+//	printf(" LONG_MAX = %li  LONG_MIN = %li\n", LONG_MAX, LONG_MIN);
+
 }

@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 20:38:55 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/03 13:10:08 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,38 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 	ft_memcpy(s, str, len + 1);
 	s[len] = 0;
 	return (s);
+}
+
+/*
+**	Allocates (with malloc(3)) and returns a string representing the 
+**	long long integer received as an argument or NULL if the allocation fails.
+**	If int is negative, the sign will be reflectec in the t_converspec
+**	cs->sign field.
+*/
+
+char	*ft_spec_di(long long int n, t_convspecs *cs)
+{
+	char	str[cs->pre > 20 ? cs->pre : 20];
+	int		i;
+
+//	printf("pre = %d", cs->pre);
+	cs->pre >= 0 ? cs->padd = ' ' : 1;
+	i = (cs->pre > 20 ? cs->pre : 20) - 1;
+	str[i] = 0;
+	if (!n) //restar 1 a pre cuando esto ocurra
+		str[--i] = '0';
+	if (n < 0)
+	{
+		cs->sign = '-';
+		str[--i] = '0' - n % 10;
+		n /= -10;
+	}
+	while (cs->pre-- > 0 || n % 10 || n / 10)
+	{
+		str[--i] = n % 10 + '0';
+		n /= 10;
+	}
+	return (ft_strdup(&str[i]));
 }
 
 /*
@@ -123,7 +155,7 @@ t_convspecs	*ft_csinit(void)
 	new->padd = ' ';
 	new->alt = 0;
 	new->width = 0;
-	new->pre = INT_MAX;
+	new->pre = -1;
 	new->len = 0;
 	new->spec = 0;
 	return (new);
