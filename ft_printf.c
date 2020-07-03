@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/03 13:09:38 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/03 13:37:51 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,9 +184,9 @@ int		ft_printf(const char *str, ...)
 int		main(void)
 {   
 	char c = 'J';
-	int i = 0;
+	int i = 2846;
 	int u = 4295;
-	char pre = 0;
+	char pre = 6;
 	char *hey = "hey!!no";
 	int n1 = 0;
 	int n2 = 0;
@@ -200,5 +200,4 @@ int		main(void)
 	printf("n1=%d n2=%d\n", n1, n2);
 //	printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
 //	printf(" LONG_MAX = %li  LONG_MIN = %li\n", LONG_MAX, LONG_MIN);
-
 }
