@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/03 23:13:55 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/04 13:04:54 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,10 +234,8 @@ int		main(void)
 	n2 = 0;
 	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 	ft_printf("n1=%d n2=%d\n", n1, n2);
-//	printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
-//	ft_printf("LLONG_MAX = %lli LLONG_MIN = %lli\n", LLONG_MAX, LLONG_MIN);
-//	printf(" LONG_MAX = %li  LONG_MIN = %li\n", LONG_MAX, LONG_MIN);
-//	ft_printf(" LONG_MAX = %li  LONG_MIN = %li\n", LONG_MAX, LONG_MIN);
-//	printf("LLONG_MAX = %i LLONG_MIN = %i\n", LLONG_MAX, LLONG_MIN);
-//	ft_printf("LLONG_MAX = %i LLONG_MIN = %i\n", LLONG_MAX, LLONG_MIN);
+	printf("%.03s", NULL);
+	printf("\n");
+	ft_printf("%.03s", NULL);
+	printf("\n");
 }

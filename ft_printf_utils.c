@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/03 23:13:57 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/04 13:06:19 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 	int		len;
 	char	*s;
 
-	if (cs->pre <= 0)
+	!str ? str = "(null)" : 1;
+	if (cs->pre == 0)
 		return (ft_strdup(""));
 	len = ft_strlen(str);
-	len = (cs->pre < len ? cs->pre : len);
+	len = (cs->pre > 0 && cs->pre < len? cs->pre : len);
 	if (!(s = malloc(len + 1)))
 		return (NULL);
 	ft_memcpy(s, str, len + 1);
