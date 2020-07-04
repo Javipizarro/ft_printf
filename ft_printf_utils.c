@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/04 13:06:19 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/04 19:58:05 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 	int		len;
 	char	*s;
 
-	!str ? str = "(null)" : 1;
+	if (!str)
+		str = "(null)";
 	if (cs->pre == 0)
 		return (ft_strdup(""));
 	len = ft_strlen(str);
@@ -55,6 +56,7 @@ char	*ft_spec_cu(unsigned long long int n, t_convspecs *cs)
 	str[i] = 0;
 	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)n) >= 0)
 		return (ft_strdup(&str[i]));
+//	str[i - 1] = '0';
 	!n && cs->pre < 0 ? str[--i] = '0' : 1;
 	while (cs->pre-- > 0 || n % 10 || n / 10)
 	{
@@ -71,24 +73,25 @@ char	*ft_spec_cu(unsigned long long int n, t_convspecs *cs)
 **	cs->sign field.
 */
 
-char	*ft_spec_di(long long int n, t_convspecs *cs)
+char	*ft_spec_di(long long int num, t_convspecs *cs)
 {
 	char	str[cs->pre > 21 ? cs->pre : 21];
 	int		i;
 
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	str[i] = 0;
-	!n && cs->pre < 0 ? str[--i] = '0' : 1;
-	if (n < 0 && cs->pre--)
+//	str[i - 1] = '0';
+	!num && cs->pre < 0 ? str[--i] = '0' : 1;
+	if (num < 0 && cs->pre--)
 	{
 		cs->sign = '-';
-		str[--i] = '0' - n % 10;
-		n /= -10;
+		str[--i] = '0' - num % 10;
+		num /= -10;
 	}
-	while (cs->pre-- > 0 || n % 10 || n / 10)
+	while (cs->pre-- > 0 || num % 10 || num / 10)
 	{
-		str[--i] = n % 10 + '0';
-		n /= 10;
+		str[--i] = num % 10 + '0';
+		num /= 10;
 	}
 	return (ft_strdup(&str[i]));
 }
@@ -100,7 +103,7 @@ char	*ft_spec_di(long long int n, t_convspecs *cs)
 **	Negative numbers are also handled.
 */
 
-char	*ft_spec_px(unsigned long long int n, t_convspecs *cs)
+char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
 {
 	char		str[cs->pre > 21 ? cs->pre : 21];
 	int			i;
@@ -114,13 +117,12 @@ char	*ft_spec_px(unsigned long long int n, t_convspecs *cs)
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	base = cs->spec == 'X' ? "0123456789ABCDEF" : "0123456789abcdef";
 	str[i] = 0;
-	while (cs->pre-- > 0 || n % 16 || n / 16)
+	str[i - 1] = base[0];
+	while (cs->pre-- > 0 || num % 16 || num / 16)
 	{
-		str[--i] = base[n % 16];
-		n /= 16;
+		str[--i] = base[num % 16];
+		num /= 16;
 	}
-	if (i == 18)
-		str[--i] = base[0];
 	if (cs->spec == 'p' || (cs->spec == 'x' && cs->alt))
 		return (ft_strjoin("0x", &str[i]));
 	else if (cs->spec == 'X' && cs->alt)
@@ -135,7 +137,7 @@ char	*ft_spec_px(unsigned long long int n, t_convspecs *cs)
 **	Negative numbers are also handled.
 */
 
-char	*ft_itoax(unsigned int n, char x)
+char	*ft_itoax(unsigned int num, char x)
 {
 	char		ret[9];
 	short int	i;
@@ -149,10 +151,10 @@ char	*ft_itoax(unsigned int n, char x)
 		return ("Error, invalid 'x' argument");
 	i = 8;
 	ret[i] = 0;
-	while (n % 16 || n / 16)
+	while (num % 16 || num / 16)
 	{
-		ret[--i] = base[n % 16];
-		n /= 16;
+		ret[--i] = base[num % 16];
+		num /= 16;
 	}
 	if (i == 8)
 		ret[--i] = base[0];
@@ -166,7 +168,7 @@ char	*ft_itoax(unsigned int n, char x)
 **	Negative numbers are also handled.
 */
 
-char	*ft_litoax(unsigned long int n, char x)
+char	*ft_litoax(unsigned long int num, char x)
 {
 	char		ret[19];
 	short int	i;
@@ -180,10 +182,10 @@ char	*ft_litoax(unsigned long int n, char x)
 		return ("Error, invalid 'x' argument");
 	i = 18;
 	ret[i] = 0;
-	while (n % 16 || n / 16)
+	while (num % 16 || num / 16)
 	{
-		ret[--i] = base[n % 16];
-		n /= 16;
+		ret[--i] = base[num % 16];
+		num /= 16;
 	}
 	if (i == 18)
 		ret[--i] = base[0];

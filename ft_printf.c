@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/04 13:04:54 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/04 19:46:31 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		ft_builder(t_convspecs *cs, char **s)
 
 int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 {
-	cs->spec == 'c' || cs->spec == 's' || cs->pre >= 0 ? cs->padd = ' ' : 1;
+	!(cs->spec == 'c' || cs->spec == 's') && cs->pre >= 0 ? cs->padd = ' ' : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'x' || cs->spec == 'X' ||
 	cs->spec == 'p' || cs->spec == 'u' ? cs->sign = 0 : 1;
 	if (cs->spec == '%')
@@ -220,22 +220,21 @@ int		main(void)
 //	n1 = 0;
 //	n2 = 0;
 	char c = 'J';
-	int i = 2846;
+	int i = 17;
 	unsigned int u = 4698;
 	int pre = 6;
 	char *hey = "hey!!no";
 	int n1 = 0;
 	int n2 = 0;
 	double f = 179e-3;
-
 	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 	printf("n1=%d n2=%d\n", n1, n2);
 	n1 = 0;
 	n2 = 0;
 	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 	ft_printf("n1=%d n2=%d\n", n1, n2);
-	printf("%.03s", NULL);
+	printf("\nthis %x number", i);
 	printf("\n");
-	ft_printf("%.03s", NULL);
+	ft_printf("this %x number\n", i);
 	printf("\n");
 }
