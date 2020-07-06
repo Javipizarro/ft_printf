@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/06 18:52:14 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/06 19:03:21 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,7 @@ char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs)
 
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	str[i] = 0;
-//	printf("\nspec='%c', num=%llu", cs->spec, num);
-	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num))
+	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
 		return (ft_strdup(&str[i]));
 //	if (cs->spec == 'c' || cs->spec == '%')
 //	{
@@ -69,7 +68,6 @@ char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs)
 		str[--i] = num % 10 + '0';
 		num /= 10;
 	}
-	printf("str=%s", str);
 	return (ft_strdup(&str[i]));
 }
 
