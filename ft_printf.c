@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 00:41:36 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 01:04:33 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_flager(const char **str, t_convspecs *cs)
 		**str == '#' ? cs->alt = '#' : 1;
 		(*str)++;
 	}
-	cs->adj == '-' ? cs->padd = ' ' : 1;
+//	cs->adj == '-' ? cs->padd = ' ' : 1;
 //	printf("\nadj =>\t'%c'\npadd => \t'%c'\nsign => \t'%c'\nalt =>  \t'%c'\n", cs->adj, cs->padd, cs->sign, cs->alt);
 }
 
@@ -65,6 +65,8 @@ void	ft_width_pre(const char **str, t_convspecs *cs, va_list args)
 		while (ft_isdigit(**str))
 			(*str)++;
 	}
+	if (cs->width < 0 && (cs->width *= -1))
+		cs->adj = '-';
 	if (**str == '.' && (*str)++)
 	{
 		if (**str == '*' && (*str)++)
@@ -78,6 +80,7 @@ void	ft_width_pre(const char **str, t_convspecs *cs, va_list args)
 				(*str)++;
 		}
 	}
+	cs->adj == '-' ? cs->padd = ' ' : 1;
 //	printf("\nwidth =>\t'%i'\npre =>  \t'%i'\n", cs->width, cs->pre);
 }
 
@@ -234,9 +237,9 @@ int		main(void)
 //	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	ft_printf("n1=%d n2=%d\n", n1, n2);
 	printf("printf:\n");
-	printf("%d", printf("%c", '\0'));
+	printf("%d", printf("%0*i", -7, -54));
 	printf("\n");
 	printf("ft_printf:\n");
-	ft_printf("%d", ft_printf("%c", '\0'));
+	ft_printf("%d", ft_printf("%0*i", -7, -54));
 	printf("\n");
 }

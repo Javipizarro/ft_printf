@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 00:38:34 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 00:51:13 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n)
 //		return (ft_strdup(&str[i]));
 	if (cs->spec == 'c' || cs->spec == '%')
 	{
-		!num ? (*n)->nchr += 1 : 1;
+		!num ? (*n)->nchr++ : 1;
+		!num ? cs->width-- : 1;
 		str[--i] = (char)num;
 		return (ft_strdup(&str[i]));
 	}
