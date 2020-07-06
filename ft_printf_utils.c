@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/06 19:03:21 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 00:38:34 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,23 @@ char	*ft_spec_s(char *str, t_convspecs *cs)
 **	The sign will be reset (=0) in the t_converspec cs->sign field.
 */
 
-char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs)
+char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n)
 {
 	char	str[cs->pre > 21 ? cs->pre : 21];
 	int		i;
 
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	str[i] = 0;
-	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
-		return (ft_strdup(&str[i]));
-//	if (cs->spec == 'c' || cs->spec == '%')
-//	{
-//		str[--i] = (char)num;
+//	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
+//		!num ? n->
+//	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
 //		return (ft_strdup(&str[i]));
-//	}
+	if (cs->spec == 'c' || cs->spec == '%')
+	{
+		!num ? (*n)->nchr += 1 : 1;
+		str[--i] = (char)num;
+		return (ft_strdup(&str[i]));
+	}
 //	str[i - 1] = '0';
 	!num && cs->pre < 0 ? str[--i] = '0' : 1;
 	while (cs->pre-- > 0 || num)
