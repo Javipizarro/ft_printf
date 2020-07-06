@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf.c03(con_malloc)                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 01:34:12 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 01:30:58 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 	else if (cs->spec == 's')
 		*s = ft_spec_s(va_arg(args, char*), cs);
     else if (cs->spec == 'c')
-        (*n)->nchr += write_char(cs, args);
+        write_char(cs, args);
 	else if ((cs->spec == 'u' && cs->len == 'H') || cs->spec == 'c')
 		*s = ft_spec_cu((unsigned char)va_arg(args, int), cs, n);
 	else if (cs->spec == 'u' && cs->len == 'h')
@@ -230,7 +230,7 @@ int		ft_printf(const char *str, ...)
 	va_end(args);
 	return (ft_asignn(n));
 }
-/*
+
 int		main(void)
 {   
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -267,4 +267,3 @@ int		main(void)
 	ft_printf("%d", ft_printf("%c", '@^'));
 	printf("\n");
 }
-*/
