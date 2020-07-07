@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 18:52:28 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 19:56:29 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,22 @@
 
 #include "ft_printf.h"
 
+/*
+**	Receives the va_list args and the specs, and prints the output for a char
+**	or a % tipe.
+**	Returns the number of characters printed.
+*/
+
 int		ft_spec_c(t_convspecs *cs, va_list args)
 {
-	char	c;
-	int		i;
+	unsigned int	i;
+	char			c;
 
 	i = 0;
 	c = cs->spec == '%' ? '%' : (char)va_arg(args, int);
 	if (cs->adj == '-')
 		write(1, &c, 1);
-	while (i++ < cs->width)
+	while (++i < cs->width)
 		if (cs->padd == '0' && cs->adj != '-')
 			write(1, "0", 1);
 		else
@@ -37,27 +43,25 @@ int		ft_spec_c(t_convspecs *cs, va_list args)
 }
 
 /*
-**	Allocates sufficient memory for a copy of the string 'str' once applied
-**	a max lenth pre if suitable, does the copy,	and returns a pointer to it.
-**	The pointer may subsequently be used as an argument to the function free(3).
+**	Receives the string 's' and prints it with the changes expecified in the cs.
+**	Returns the number of characters printed.
 */
 
-char	*ft_spec_s(char *str, t_convspecs *cs)
+int		ft_spec_s(t_convspecs *cs, char *s)
 {
-	int		len;
-	char	*s;
+	unsigned int	i;
+	unsigned int	len;
 
-	if (!str)
-		str = "(null)";
-	if (cs->pre == 0)
-		return (ft_strdup(""));
-	len = ft_strlen(str);
-	len = (cs->pre > 0 && cs->pre < len? cs->pre : len);
-	if (!(s = malloc(len + 1)))
-		return (NULL);
-	ft_memcpy(s, str, len + 1);
-	s[len] = 0;
-	return (s);
+	len = cs->pre >= 0 && cs->pre < ft_strlen(s) ? cs->pre : ft_strlen(s);
+	if (cs->adj == '-')
+		write(1, s, len);
+	
+	i = 0;
+	while (cs->width-- > len && ++i)
+		write(1, &cs->padd, 1);
+	if (cs->adj != '-')
+		write(1, s, len);
+	return (len + i);
 }
 
 /*
@@ -145,7 +149,6 @@ char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	base = cs->spec == 'X' ? "0123456789ABCDEF" : "0123456789abcdef";
 	str[i] = 0;
-//	str[i - 1] = base[0];
 	!num && cs->pre < 0 ? str[--i] = base[0] : 1;
 
 	while (cs->pre-- > 0 || num)

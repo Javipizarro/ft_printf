@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 18:52:08 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 19:49:48 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 	if (cs->spec == '%' || cs->spec == 'c')
         (*n)->nchr += ft_spec_c(cs, args);
 	else if (cs->spec == 's')
-		*s = ft_spec_s(va_arg(args, char*), cs);
+		(*n)->nchr += ft_spec_s(cs, va_arg(args, char*));
 	else if ((cs->spec == 'u' && cs->len == 'H') || cs->spec == 'c')
 		*s = ft_spec_cu((unsigned char)va_arg(args, int), cs, n);
 	else if (cs->spec == 'u' && cs->len == 'h')
@@ -222,24 +222,24 @@ int		main(void)
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-//	char c = 'J';
-//	int i = 0;
-//	unsigned int u = 4698;
-//	int pre = 6;
-//	char *hey = "hey!!no";
-//	int n1 = 0;
-//	int n2 = 0;
-//	double f = 179e-3;
-//	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-//	printf("n1=%d n2=%d\n", n1, n2);
-//	n1 = 0;
-//	n2 = 0;
-//	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-//	ft_printf("n1=%d n2=%d\n", n1, n2);
-	printf("printf:\n");
-	printf("%d", printf("%5% %c", 'g'));
-	printf("\n");
-	printf("ft_printf:\n");
-	ft_printf("%d", ft_printf("%5% %c", 'g'));
-	printf("\n");
+	char c = 'J';
+	int i = 0;
+	unsigned int u = 4698;
+	int pre = 6;
+	char *hey = "hey!!no";
+	int n1 = 0;
+	int n2 = 0;
+	double f = 179e-3;
+	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+	printf("n1=%d n2=%d\n", n1, n2);
+	n1 = 0;
+	n2 = 0;
+	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+	ft_printf("n1=%d n2=%d\n", n1, n2);
+//	printf("printf:\n");
+//	printf("%d", printf("%-7.5s", hey));
+//	printf("\n");
+//	printf("ft_printf:\n");
+//	ft_printf("%d", ft_printf("%-7.5s", hey));
+//	printf("\n");
 }

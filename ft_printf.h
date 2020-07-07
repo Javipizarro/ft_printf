@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 18:40:44 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 19:53:57 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,6 @@ int			ft_spec_c(t_convspecs *cs, va_list args);
 char		*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n);
 char		*ft_spec_di(long long int n, t_convspecs *cs);
 char		*ft_spec_px(unsigned long long int n, t_convspecs *cs);
-char		*ft_spec_s(char *str, t_convspecs *cs);
+int			ft_spec_s(t_convspecs *cs, char *s);
 
 #endif
