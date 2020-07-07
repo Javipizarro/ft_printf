@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 20:08:06 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 21:20:14 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,46 +23,21 @@
 **	Returns the number of characters printed.
 */
 
-int		ft_spec_c(t_convspecs *cs, va_list args)
+int		ft_spec_c(t_convspecs *cs, char c)
 {
-	int		i;
-	char	c;
+	int		padd;
 	
-	i = 0;
-	c = cs->spec == '%' ? '%' : (char)va_arg(args, int);
+	padd = 0;
 	if (cs->adj == '-')
 		write(1, &c, 1);
-	while (++i < cs->width)
+	while (++padd < cs->width)
 		if (cs->padd == '0' && cs->adj != '-')
 			write(1, "0", 1);
 		else
 			write(1, " ", 1);
 	if (cs->adj != '-')
 		write(1, &c, 1);
-	return (i);
-}
-
-/*
-**	Receives the string 's' and prints it with the changes expecified in the cs.
-**	Returns the number of characters printed.
-*/
-
-int		ft_spec_s(t_convspecs *cs, char *s)
-{
-	int		i;
-	int		len;
-
-	len = ft_strlen(s);
-	len = cs->pre >= 0 && cs->pre < len ? cs->pre : len;
-	if (cs->adj == '-')
-		write(1, s, len);
-	
-	i = 0;
-	while (cs->width-- > len && ++i)
-		write(1, &cs->padd, 1);
-	if (cs->adj != '-')
-		write(1, s, len);
-	return (len + i);
+	return (padd);
 }
 
 /*
@@ -71,6 +46,32 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 **	The sign will be reset (=0) in the t_converspec cs->sign field.
 */
 
+int		ft_spec_cu(t_convspecs *cs, unsigned long long int num)
+{
+	char	s[cs->pre > 21 ? cs->pre : 21];
+	int		len;
+	int		padd;
+	int		end;
+
+	len = 0;
+	end = (cs->pre > 21 ? cs->pre : 21) - 1;
+	s[end] = 0;
+	!num && cs->pre < 0 ? s[end - ++len] = '0' : 1;
+	while (cs->pre-- > 0 || num)
+	{
+		s[end - ++len] = num % 10 + '0';
+		num /= 10;
+	}
+	if (cs->adj == '-')
+		write(1, &s[end - len], len);
+	padd = 0;
+	while (cs->width-- > len && ++padd)
+		write(1, &cs->padd, 1);
+	if (cs->adj != '-')
+		write(1, &s[end - len], len);
+	return (len + padd);
+}
+/*
 char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n)
 {
 	char	str[cs->pre > 21 ? cs->pre : 21];
@@ -98,7 +99,7 @@ char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n)
 	}
 	return (ft_strdup(&str[i]));
 }
-
+*/
 /*
 **	Allocates (with malloc(3)) and returns a string representing the 
 **	long long integer received as an argument or NULL if the allocation fails.
@@ -113,7 +114,6 @@ char	*ft_spec_di(long long int num, t_convspecs *cs)
 
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	str[i] = 0;
-//	str[i - 1] = '0';
 	!num && cs->pre < 0 ? str[--i] = '0' : 1;
 	if (num < 0 && cs->pre--)
 	{
@@ -127,6 +127,29 @@ char	*ft_spec_di(long long int num, t_convspecs *cs)
 		num /= 10;
 	}
 	return (ft_strdup(&str[i]));
+}
+
+/*
+**	Receives the string 's' and prints it with the changes expecified in the cs.
+**	Returns the number of characters printed.
+*/
+
+int		ft_spec_s(t_convspecs *cs, char *s)
+{
+	int		padd;
+	int		len;
+
+	s = !s ? "(null)" : s;
+	len = ft_strlen(s);
+	len = cs->pre >= 0 && cs->pre < len ? cs->pre : len;
+	if (cs->adj == '-')
+		write(1, s, len);
+	padd = 0;
+	while (cs->width-- > len && ++padd)
+		write(1, &cs->padd, 1);
+	if (cs->adj != '-')
+		write(1, s, len);
+	return (len + padd);
 }
 
 /*

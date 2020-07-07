@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 20:04:29 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 21:15:51 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,20 +125,25 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 	!(cs->spec == 'c' || cs->spec == 's') && cs->pre >= 0 ? cs->padd = ' ' : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'x' || cs->spec == 'X' ||
 	cs->spec == 'p' || cs->spec == 'u' ? cs->sign = 0 : 1;
-	if (cs->spec == '%' || cs->spec == 'c')
-        (*n)->nchr += ft_spec_c(cs, args);
+	if (cs->spec == '%')
+        (*n)->nchr += ft_spec_c(cs, '%');
+	else if (cs->spec == 'c')
+        (*n)->nchr += ft_spec_c(cs, (char)va_arg(args, int));
 	else if (cs->spec == 's')
 		(*n)->nchr += ft_spec_s(cs, va_arg(args, char*));
-	else if ((cs->spec == 'u' && cs->len == 'H') || cs->spec == 'c')
-		*s = ft_spec_cu((unsigned char)va_arg(args, int), cs, n);
-	else if (cs->spec == 'u' && cs->len == 'h')
-		*s = ft_spec_cu((unsigned short int)va_arg(args, int), cs, n);
 	else if (cs->spec == 'u' && !cs->len)
-		*s = ft_spec_cu((unsigned int)va_arg(args, int), cs, n);
-	else if (cs->spec == 'u' && cs->len == 'l')
-		*s = ft_spec_cu((unsigned long int)va_arg(args, int), cs, n);
-	else if (cs->spec == 'u' && cs->len == 'L')
-		*s = ft_spec_cu((unsigned long long int)va_arg(args, int), cs, n);
+		(*n)->nchr += ft_spec_cu(cs, (unsigned int)va_arg(args, int));
+
+//	else if ((cs->spec == 'u' && cs->len == 'H') || cs->spec == 'c')
+//		*s = ft_spec_cu((unsigned char)va_arg(args, int), cs, n);
+//	else if (cs->spec == 'u' && cs->len == 'h')
+//		*s = ft_spec_cu((unsigned short int)va_arg(args, int), cs, n);
+//	else if (cs->spec == 'u' && !cs->len)
+//		*s = ft_spec_cu((unsigned int)va_arg(args, int), cs, n);
+//	else if (cs->spec == 'u' && cs->len == 'l')
+//		*s = ft_spec_cu((unsigned long int)va_arg(args, int), cs, n);
+//	else if (cs->spec == 'u' && cs->len == 'L')
+//		*s = ft_spec_cu((unsigned long long int)va_arg(args, int), cs, n);
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'H')
 		*s = ft_spec_di((signed char)va_arg(args, int), cs);
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'h')
@@ -222,24 +227,24 @@ int		main(void)
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-	char c = 'J';
-	int i = 0;
+//	char c = 'J';
+//	int i = 0;
 	unsigned int u = 4698;
-	int pre = 6;
-	char *hey = "hey!!no";
-	int n1 = 0;
-	int n2 = 0;
-	double f = 179e-3;
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	printf("n1=%d n2=%d\n", n1, n2);
-	n1 = 0;
-	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	ft_printf("n1=%d n2=%d\n", n1, n2);
-//	printf("printf:\n");
-//	printf("%d", printf("%-7.5s", hey));
-//	printf("\n");
-//	printf("ft_printf:\n");
-//	ft_printf("%d", ft_printf("%-7.5s", hey));
-//	printf("\n");
+//	int pre = 6;
+//	char *hey = "hey!!no";
+//	int n1 = 0;
+//	int n2 = 0;
+//	double f = 179e-3;
+//	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	printf("n1=%d n2=%d\n", n1, n2);
+//	n1 = 0;
+//	n2 = 0;
+//	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	ft_printf("n1=%d n2=%d\n", n1, n2);
+	printf("printf:\n");
+	printf("%d", printf("num=%-8.6u.", u));
+	printf("\n");
+	printf("ft_printf:\n");
+	ft_printf("%d", ft_printf("num=%-8.6u.", u));
+	printf("\n");
 }
