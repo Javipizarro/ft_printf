@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 19:56:29 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 20:08:06 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 
 int		ft_spec_c(t_convspecs *cs, va_list args)
 {
-	unsigned int	i;
-	char			c;
-
+	int		i;
+	char	c;
+	
 	i = 0;
 	c = cs->spec == '%' ? '%' : (char)va_arg(args, int);
 	if (cs->adj == '-')
@@ -49,10 +49,11 @@ int		ft_spec_c(t_convspecs *cs, va_list args)
 
 int		ft_spec_s(t_convspecs *cs, char *s)
 {
-	unsigned int	i;
-	unsigned int	len;
+	int		i;
+	int		len;
 
-	len = cs->pre >= 0 && cs->pre < ft_strlen(s) ? cs->pre : ft_strlen(s);
+	len = ft_strlen(s);
+	len = cs->pre >= 0 && cs->pre < len ? cs->pre : len;
 	if (cs->adj == '-')
 		write(1, s, len);
 	
