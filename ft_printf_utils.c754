@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils.c                                  :+:      :+:    :+:   */
+/*   ft_printf_utils.c754                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 18:52:28 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 18:39:08 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,6 @@
 ///
 
 #include "ft_printf.h"
-
-int		ft_spec_c(t_convspecs *cs, va_list args)
-{
-	char	c;
-	int		i;
-
-	i = 0;
-	c = cs->spec == '%' ? '%' : (char)va_arg(args, int);
-	if (cs->adj == '-')
-		write(1, &c, 1);
-	while (i++ < cs->width)
-		if (cs->padd == '0' && cs->adj != '-')
-			write(1, "0", 1);
-		else
-			write(1, " ", 1);
-	if (cs->adj != '-')
-		write(1, &c, 1);
-	return (i);
-}
 
 /*
 **	Allocates sufficient memory for a copy of the string 'str' once applied

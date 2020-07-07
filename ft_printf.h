@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 00:40:28 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/07 18:40:44 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char		*ft_litoax(unsigned long int n, char x);
 t_n			*ft_newn(t_n *prev, int nchr);
 int			ft_printf(const char *str, ...);
 void		ft_saven(t_n **n, va_list args/*, t_convspecs *cs*/);
+int			ft_spec_c(t_convspecs *cs, va_list args);
 char		*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n);
 char		*ft_spec_di(long long int n, t_convspecs *cs);
 char		*ft_spec_px(unsigned long long int n, t_convspecs *cs);
