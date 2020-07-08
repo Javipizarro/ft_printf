@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 21:20:14 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:08:01 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,92 +41,53 @@ int		ft_spec_c(t_convspecs *cs, char c)
 }
 
 /*
-**	Allocates (with malloc(3)) and returns a string representing the unsigned
-**	long long integer received as an argument or NULL if the allocation fails.
-**	The sign will be reset (=0) in the t_converspec cs->sign field.
-*/
-
-int		ft_spec_cu(t_convspecs *cs, unsigned long long int num)
-{
-	char	s[cs->pre > 21 ? cs->pre : 21];
-	int		len;
-	int		padd;
-	int		end;
-
-	len = 0;
-	end = (cs->pre > 21 ? cs->pre : 21) - 1;
-	s[end] = 0;
-	!num && cs->pre < 0 ? s[end - ++len] = '0' : 1;
-	while (cs->pre-- > 0 || num)
-	{
-		s[end - ++len] = num % 10 + '0';
-		num /= 10;
-	}
-	if (cs->adj == '-')
-		write(1, &s[end - len], len);
-	padd = 0;
-	while (cs->width-- > len && ++padd)
-		write(1, &cs->padd, 1);
-	if (cs->adj != '-')
-		write(1, &s[end - len], len);
-	return (len + padd);
-}
-/*
-char	*ft_spec_cu(unsigned long long int num, t_convspecs *cs, t_n **n)
-{
-	char	str[cs->pre > 21 ? cs->pre : 21];
-	int		i;
-
-	i = (cs->pre > 21 ? cs->pre : 21) - 1;
-	str[i] = 0;
-//	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
-//		!num ? n->
-//	if ((cs->spec == 'c' || cs->spec == '%') && (str[--i] = (char)num) >= 0)
-//		return (ft_strdup(&str[i]));
-	if (cs->spec == 'c' || cs->spec == '%')
-	{
-		!num ? (*n)->nchr++ : 1;
-		!num ? cs->width-- : 1;
-		str[--i] = (char)num;
-		return (ft_strdup(&str[i]));
-	}
-//	str[i - 1] = '0';
-	!num && cs->pre < 0 ? str[--i] = '0' : 1;
-	while (cs->pre-- > 0 || num)
-	{
-		str[--i] = num % 10 + '0';
-		num /= 10;
-	}
-	return (ft_strdup(&str[i]));
-}
-*/
-/*
 **	Allocates (with malloc(3)) and returns a string representing the 
 **	long long integer received as an argument or NULL if the allocation fails.
 **	If int is negative, the sign will be reflectec in the t_converspec
 **	cs->sign field.
 */
-
-char	*ft_spec_di(long long int num, t_convspecs *cs)
+int		ft_strpaddprint(t_convspecs *cs, char *s)
 {
-	char	str[cs->pre > 21 ? cs->pre : 21];
+	int		add;
+	int 	len;
+
+	len = ft_strlen(s);
+	cs->width -=  cs->sign ? 1 : 0;
+	if (cs->adj == '-')
+		write(1, s, len);
+	if (cs->sign && cs->padd == '0' && ++add)
+		write(1, &cs->sign, 1);
+	add = 0;
+	while (cs->width-- > len && ++add)
+		write(1, &cs->padd, 1);
+	if (cs->sign && cs->padd == ' ' && ++add)
+		write(1, &cs->sign, 1);
+	if (cs->adj != '-')
+		write(1, s, len);
+	printf("s=%s, len+add=%i, ", s, len+add);
+	return (len + add);
+}
+
+int		ft_spec_di(t_convspecs *cs, long long int num)
+{
+	char	s[cs->pre > 21 ? cs->pre : 21];
 	int		i;
 
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
-	str[i] = 0;
-	!num && cs->pre < 0 ? str[--i] = '0' : 1;
-	if (num < 0 && cs->pre--)
+	s[i] = 0;
+	!num && cs->pre < 0 ? s[--i] = '0' : 1;
+	if (num < 0 && 	(cs->sign = '-'))
 	{
-		cs->sign = '-';
-		str[--i] = '0' - num % 10;
+		cs->pre--;
+		s[--i] = '0' - num % 10;
 		num /= -10;
 	}
 	while (cs->pre-- > 0 || num)
 	{
-		str[--i] = num % 10 + '0';
+		s[--i] = num % 10 + '0';
 		num /= 10;
 	}
-	return (ft_strdup(&str[i]));
+	return(ft_strpaddprint(cs, &s[i]));
 }
 
 /*
@@ -185,6 +146,38 @@ char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
 	else if (cs->spec == 'X' && cs->alt)
 		return (ft_strjoin("0X", &str[i]));
 	return (ft_strdup(&str[i]));
+}
+
+/*
+**	Prints a string representing the unsigned long long integer
+**	received as an argument.
+**	Returns the number of characters printed.
+*/
+
+int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
+{
+	char	s[cs->pre > 21 ? cs->pre : 21];
+	int		len;
+	int		padd;
+	int		end;
+
+	len = 0;
+	end = (cs->pre > 21 ? cs->pre : 21) - 1;
+	s[end] = 0;
+	!num && cs->pre < 0 ? s[end - ++len] = '0' : 1;
+	while (cs->pre-- > 0 || num)
+	{
+		s[end - ++len] = num % 10 + '0';
+		num /= 10;
+	}
+	if (cs->adj == '-')
+		write(1, &s[end - len], len);
+	padd = 0;
+	while (cs->width-- > len && ++padd)
+		write(1, &cs->padd, 1);
+	if (cs->adj != '-')
+		write(1, &s[end - len], len);
+	return (len + padd);
 }
 
 /*
