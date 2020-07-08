@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 12:55:27 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 14:03:42 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 **	the result.
 **	Returns the number of characters printed.
 */
+//	if (cs->spec == 'p' || (cs->spec == 'x' && cs->alt))
+//		return (ft_strjoin("0x", &s[i]));
+//	else if (cs->spec == 'X' && cs->alt)
+//		return (ft_strjoin("0X", &s[i]));
 
 int		ft_printer(t_convspecs *cs, char *s)
 {
@@ -31,14 +35,20 @@ int		ft_printer(t_convspecs *cs, char *s)
 	add = 0;
 	len = ft_strlen(s);
 	cs->width -=  cs->sign ? 1 : 0;
+	cs->width -=  (cs->spec == 'p' || cs->alt) ? 2 : 0;
+	add += (cs->spec == 'p' || cs->alt) ? 2 : 0;
 	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
 		write(1, &cs->sign, 1);
+	if ((cs->adj || cs->padd == '0') && (cs->spec == 'p' || cs->alt))
+		write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (cs->adj == '-')
 		write(1, s, len);
 	while (cs->width-- > len && ++add)
 		write(1, &cs->padd, 1);
 	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
 		write(1, &cs->sign, 1);
+	if (!cs->adj && cs->padd == ' ' && (cs->spec == 'p' || cs->alt))
+		write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (!cs->adj)
 		write(1, s, len);
 	return (len + add);
@@ -126,9 +136,9 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 **	Negative numbers are also handled.
 */
 
-char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
+int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 {
-	char		str[cs->pre > 21 ? cs->pre : 21];
+	char		s[cs->pre > 21 ? cs->pre : 21];
 	int			i;
 	char		*base;
 
@@ -139,19 +149,14 @@ char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
 	}
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	base = cs->spec == 'X' ? "0123456789ABCDEF" : "0123456789abcdef";
-	str[i] = 0;
-	!num && cs->pre < 0 ? str[--i] = base[0] : 1;
-
+	s[i] = 0;
+	!num && cs->pre < 0 ? s[--i] = base[0] : 1;
 	while (cs->pre-- > 0 || num)
 	{
-		str[--i] = base[num % 16];
+		s[--i] = base[num % 16];
 		num /= 16;
 	}
-	if (cs->spec == 'p' || (cs->spec == 'x' && cs->alt))
-		return (ft_strjoin("0x", &str[i]));
-	else if (cs->spec == 'X' && cs->alt)
-		return (ft_strjoin("0X", &str[i]));
-	return (ft_strdup(&str[i]));
+	return(ft_printer(cs, &s[i]));
 }
 
 /*
@@ -173,14 +178,6 @@ int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
 		s[--i] = num % 10 + '0';
 		num /= 10;
 	}
-//	if (cs->adj == '-')
-//		write(1, &s[end - len], len);
-//	padd = 0;
-//	while (cs->width-- > len && ++padd)
-//		write(1, &cs->padd, 1);
-//	if (!cs->adj)
-//		write(1, &s[end - len], len);
-//	return (len + padd);
 	return(ft_printer(cs, &s[i]));
 }
 

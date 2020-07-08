@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/07 22:26:03 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 13:45:01 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void		ft_saven(t_n **n, va_list args/*, t_convspecs *cs*/);
 int			ft_spec_c(t_convspecs *cs, char c);
 int			ft_spec_u(t_convspecs *cs, unsigned long long int num);
 int			ft_spec_di(t_convspecs *cs, long long int num);
-char		*ft_spec_px(unsigned long long int n, t_convspecs *cs);
+int			ft_spec_px(t_convspecs *cs, unsigned long long int num);
 int			ft_spec_s(t_convspecs *cs, char *s);
 
 #endif
