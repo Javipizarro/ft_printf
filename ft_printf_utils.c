@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 17:29:56 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 18:57:56 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -345,8 +345,8 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 
 	i = 0;
 	s[i++] = '0';
-	f < 0 ? s[i++] = '-' : 1;
-	f = (f < 0 ? -f : f) / ft_dv((spe == 'f' || spe == 'j') && ex < 0 ? 0 : ex);
+	1/f < 0 ? s[i++] = '-' : 1;
+	f = (1/f < 0 ? -f : f) / ft_dv((spe == 'f' || spe == 'j') && ex < 0 ? 0 : ex);
 	while (i < len - 1 && (s[i++] = (char)f + 48))
 		f = (f - (int)f) * 10;
 	if (f > 4.99)
@@ -366,29 +366,31 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 	return (ft_strdup(s[0] == '0' ? &s[1] : s));
 }
 
-char	*ft_flotoa(long double f, short int pre, char spec)
+char	*ft_flotoa(double f, short int pre, char spec)
 {
 	short int	exp;
-	long double	ff;
+	double	ff;
 	short int	len;
 
-	if (spec != 'e' && spec != 'f' && spec != 'g')
-		return (ft_strdup("\n\n\t/./flotoa spec ERROR/./\n\n"));
+//	if (spec != 'e' && spec != 'f' && spec != 'g')
+//		return (ft_strdup("\n\n\t/./flotoa spec ERROR/./\n\n"));
+	if (1/f < 0)
+		printf("neg detectado");
 	exp = 0;
-	ff = f < 0 ? -f : f;
+	ff = 1/f < 0 ? -f : f;
 	while ((ff >= 10 && ++exp) || (ff < 1 && --exp))
 		ff = ff < 1 ? ff * 10 : ff / 10;
 	pre = spec == 'g' && pre <= 0 ? 1 : pre;
 	pre = spec == 'g' ? pre - 1 : pre;
 	pre = pre < 0 ? 0 : pre;
 	len = 1 + pre + (spec == 'f' ? exp : 0);
-	ff = (f < 0 ? -f : f) / ft_dv(exp);
+	ff = (1/f < 0 ? -f : f) / ft_dv(exp);
 	while (ff >= 9 && len--)
 		ff = (ff - (int)ff) * 10;
 	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
 	spec = spec == 'g' && (exp < -4 || exp > pre) ? 'a' : spec;
 	spec = spec == 'g' ? 'j' : spec;
-	len = pre + 3 + (f < 0 ? 1 : 0);
+	len = pre + 3 + (1/f < 0 ? 1 : 0);
 	len += spec == 'f' && exp > 0 ? exp : 0;
 	len -= spec == 'j' && exp < 0 ? exp : 0;
 	return (ft_sjofree(ft_base(f, len, spec, exp), ft_exp(exp, spec), 3));

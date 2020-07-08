@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 17:15:33 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 19:06:00 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ int		ft_printf(const char *str, ...)
 	va_end(args);
 	return (ft_asignn(n));
 }
-
+/*
 int		main(void)
 {   
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -227,23 +227,24 @@ int		main(void)
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-	char c = 'J';
-	int i = 2846;
-	unsigned int u = 4698;
-	int pre = 6;
-	char *hey = "hey!!no";
-	int n1 = 0;
-	int n2 = 0;
-	double f = 179e-3;
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	printf("n1=%d n2=%d\n", n1, n2);
-	n1 = 0;
-	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	ft_printf("n1=%d n2=%d\n", n1, n2);
-//	printf("printf:\n");
-//	printf("%d\n", printf("%216c", 'a'));
-//	printf("ft_printf:\n");
-//	ft_printf("%d\n", ft_printf("%216c", 'a'));
-//	printf("\n");
+//	char c = 'J';
+//	int i = 2846;
+//	unsigned int u = 4698;
+//	int pre = 6;
+//	char *hey = "hey!!no";
+//	int n1 = 0;
+//	int n2 = 0;
+//	double f = 179e-3;
+//	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	printf("n1=%d n2=%d\n", n1, n2);
+//	n1 = 0;
+//	n2 = 0;
+//	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	ft_printf("n1=%d n2=%d\n", n1, n2);
+	printf("printf:\n");
+	printf("%d\n", printf("%f", -0.0));
+	printf("ft_printf:\n");
+	ft_printf("%d\n", ft_printf("%f", -0.0));
+	printf("\n");
 }
+*/
