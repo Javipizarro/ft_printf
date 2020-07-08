@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 12:08:01 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:33:14 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int		ft_spec_c(t_convspecs *cs, char c)
 	if (cs->adj == '-')
 		write(1, &c, 1);
 	while (++padd < cs->width)
-		if (cs->padd == '0' && cs->adj != '-')
+		if (cs->padd == '0' && !cs->adj)
 			write(1, "0", 1);
 		else
 			write(1, " ", 1);
-	if (cs->adj != '-')
+	if (!cs->adj)
 		write(1, &c, 1);
 	return (padd);
 }
@@ -51,18 +51,18 @@ int		ft_strpaddprint(t_convspecs *cs, char *s)
 	int		add;
 	int 	len;
 
+	add = 0;
 	len = ft_strlen(s);
 	cs->width -=  cs->sign ? 1 : 0;
+	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
+		write(1, &cs->sign, 1);
 	if (cs->adj == '-')
 		write(1, s, len);
-	if (cs->sign && cs->padd == '0' && ++add)
-		write(1, &cs->sign, 1);
-	add = 0;
 	while (cs->width-- > len && ++add)
 		write(1, &cs->padd, 1);
-	if (cs->sign && cs->padd == ' ' && ++add)
+	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
 		write(1, &cs->sign, 1);
-	if (cs->adj != '-')
+	if (!cs->adj)
 		write(1, s, len);
 	printf("s=%s, len+add=%i, ", s, len+add);
 	return (len + add);
@@ -108,7 +108,7 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 	padd = 0;
 	while (cs->width-- > len && ++padd)
 		write(1, &cs->padd, 1);
-	if (cs->adj != '-')
+	if (!cs->adj)
 		write(1, s, len);
 	return (len + padd);
 }
@@ -175,7 +175,7 @@ int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
 	padd = 0;
 	while (cs->width-- > len && ++padd)
 		write(1, &cs->padd, 1);
-	if (cs->adj != '-')
+	if (!cs->adj)
 		write(1, &s[end - len], len);
 	return (len + padd);
 }
