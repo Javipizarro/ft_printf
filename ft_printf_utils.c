@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 12:33:14 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:55:27 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,33 @@
 ///
 
 #include "ft_printf.h"
+
+/*
+**	Receives the string s apply the specs adj, sign and padd, and prints
+**	the result.
+**	Returns the number of characters printed.
+*/
+
+int		ft_printer(t_convspecs *cs, char *s)
+{
+	int		add;
+	int 	len;
+
+	add = 0;
+	len = ft_strlen(s);
+	cs->width -=  cs->sign ? 1 : 0;
+	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
+		write(1, &cs->sign, 1);
+	if (cs->adj == '-')
+		write(1, s, len);
+	while (cs->width-- > len && ++add)
+		write(1, &cs->padd, 1);
+	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
+		write(1, &cs->sign, 1);
+	if (!cs->adj)
+		write(1, s, len);
+	return (len + add);
+}
 
 /*
 **	Receives the va_list args and the specs, and prints the output for a char
@@ -46,27 +73,6 @@ int		ft_spec_c(t_convspecs *cs, char c)
 **	If int is negative, the sign will be reflectec in the t_converspec
 **	cs->sign field.
 */
-int		ft_strpaddprint(t_convspecs *cs, char *s)
-{
-	int		add;
-	int 	len;
-
-	add = 0;
-	len = ft_strlen(s);
-	cs->width -=  cs->sign ? 1 : 0;
-	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
-		write(1, &cs->sign, 1);
-	if (cs->adj == '-')
-		write(1, s, len);
-	while (cs->width-- > len && ++add)
-		write(1, &cs->padd, 1);
-	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
-		write(1, &cs->sign, 1);
-	if (!cs->adj)
-		write(1, s, len);
-	printf("s=%s, len+add=%i, ", s, len+add);
-	return (len + add);
-}
 
 int		ft_spec_di(t_convspecs *cs, long long int num)
 {
@@ -87,7 +93,7 @@ int		ft_spec_di(t_convspecs *cs, long long int num)
 		s[--i] = num % 10 + '0';
 		num /= 10;
 	}
-	return(ft_strpaddprint(cs, &s[i]));
+	return(ft_printer(cs, &s[i]));
 }
 
 /*
@@ -157,27 +163,25 @@ char	*ft_spec_px(unsigned long long int num, t_convspecs *cs)
 int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
 {
 	char	s[cs->pre > 21 ? cs->pre : 21];
-	int		len;
-	int		padd;
-	int		end;
+	int		i;
 
-	len = 0;
-	end = (cs->pre > 21 ? cs->pre : 21) - 1;
-	s[end] = 0;
-	!num && cs->pre < 0 ? s[end - ++len] = '0' : 1;
+	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	s[i] = 0;
+	!num && cs->pre < 0 ? s[--i] = '0' : 1;
 	while (cs->pre-- > 0 || num)
 	{
-		s[end - ++len] = num % 10 + '0';
+		s[--i] = num % 10 + '0';
 		num /= 10;
 	}
-	if (cs->adj == '-')
-		write(1, &s[end - len], len);
-	padd = 0;
-	while (cs->width-- > len && ++padd)
-		write(1, &cs->padd, 1);
-	if (!cs->adj)
-		write(1, &s[end - len], len);
-	return (len + padd);
+//	if (cs->adj == '-')
+//		write(1, &s[end - len], len);
+//	padd = 0;
+//	while (cs->width-- > len && ++padd)
+//		write(1, &cs->padd, 1);
+//	if (!cs->adj)
+//		write(1, &s[end - len], len);
+//	return (len + padd);
+	return(ft_printer(cs, &s[i]));
 }
 
 /*

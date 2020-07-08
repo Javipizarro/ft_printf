@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 11:52:46 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 12:28:45 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,6 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 	!(cs->spec == 'c' || cs->spec == 's') && cs->pre >= 0 ? cs->padd = ' ' : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'x' || cs->spec == 'X' ||
 	cs->spec == 'p' || cs->spec == 'u' ? cs->sign = 0 : 1;
-		printf("nchr=%i", (*n)->nchr);
-
 	if (cs->spec == '%')
         (*n)->nchr += ft_spec_c(cs, '%');
 	else if (cs->spec == 'c')
@@ -242,8 +240,8 @@ int		main(void)
 //	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%f %%e=%0e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	ft_printf("n1=%d n2=%d\n", n1, n2);
 	printf("printf:\n");
-	printf("%d\n", printf("num=%+8i.\n", -i));
+	printf("%d\n", printf("%-7i", -14));
 	printf("ft_printf:\n");
-	ft_printf("%d\n", ft_printf("num=%+8i.\n", -i));
+	ft_printf("%d\n", ft_printf("%-7i", -14));
 	printf("\n");
 }
