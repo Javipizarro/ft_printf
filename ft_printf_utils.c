@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 14:03:42 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/08 17:29:56 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int		ft_printer(t_convspecs *cs, char *s)
 }
 
 /*
-**	Receives the va_list args and the specs, and prints the output for a char
-**	or a % tipe.
+**	Prints the char 'c' once applied the changes
+**	specified in the t_convspecs struct pointed by *cs.
 **	Returns the number of characters printed.
 */
 
@@ -78,10 +78,10 @@ int		ft_spec_c(t_convspecs *cs, char c)
 }
 
 /*
-**	Allocates (with malloc(3)) and returns a string representing the 
-**	long long integer received as an argument or NULL if the allocation fails.
-**	If int is negative, the sign will be reflectec in the t_converspec
-**	cs->sign field.
+**	Prints the string  that represents the long long integer 'num' once
+**	applied the changes specified in the t_convspecs struct pointed by *cs.
+**	Negative numbers are also handled.
+**	Returns the number of characters printed.
 */
 
 int		ft_spec_di(t_convspecs *cs, long long int num)
@@ -107,7 +107,8 @@ int		ft_spec_di(t_convspecs *cs, long long int num)
 }
 
 /*
-**	Receives the string 's' and prints it with the changes expecified in the cs.
+**	Prints the string 's' once applied the changes expecified in
+**	the t_convspecs struct pointed by *cs.
 **	Returns the number of characters printed.
 */
 
@@ -130,10 +131,10 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 }
 
 /*
-**	Allocates (with malloc(3)) and returns a string representing the
-**	long integer received as 'n' transformed to unsigned hexa as lx or lX
-**	would do in printf or NULL if the allocation fails.
-**	Negative numbers are also handled.
+**	Prints, in hexadecimal base format, the string  that represents the
+**	unsigned long long integer 'num' once applied the changes specified
+**	in the t_convspecs struct pointed by *cs.
+**	Returns the number of characters printed.
 */
 
 int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
@@ -160,8 +161,8 @@ int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 }
 
 /*
-**	Prints a string representing the unsigned long long integer
-**	received as an argument.
+**	Prints the string  that represents the unsigned long long integer 'num' once
+**	applied the changes specified in the t_convspecs struct pointed by *cs.
 **	Returns the number of characters printed.
 */
 
@@ -179,70 +180,6 @@ int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
 		num /= 10;
 	}
 	return(ft_printer(cs, &s[i]));
-}
-
-/*
-**	Allocates (with malloc(3)) and returns a string representing the
-**	integer received as 'n' transformed to unsigned hexa as x or X
-**	would do in printf or NULL if the allocation fails.
-**	Negative numbers are also handled.
-*/
-
-char	*ft_itoax(unsigned int num, char x)
-{
-	char		ret[9];
-	short int	i;
-	char		*base;
-
-	if (x == 'x')
-		base = "0123456789abcdef";
-	else if (x == 'X')
-		base = "0123456789ABCDEF";
-	else
-		return ("Error, invalid 'x' argument");
-	i = 8;
-	ret[i] = 0;
-	while (num)
-	{
-		ret[--i] = base[num % 16];
-		num /= 16;
-	}
-	if (i == 8)
-		ret[--i] = base[0];
-	return (ft_strdup(&ret[i]));
-}
-
-/*
-**	Allocates (with malloc(3)) and returns a string representing the
-**	long integer received as 'n' transformed to unsigned hexa as lx or lX
-**	would do in printf or NULL if the allocation fails.
-**	Negative numbers are also handled.
-*/
-
-char	*ft_litoax(unsigned long int num, char x)
-{
-	char		ret[19];
-	short int	i;
-	char		*base;
-
-	if (x == 'x' || x == 'p')
-		base = "0123456789abcdef";
-	else if (x == 'X')
-		base = "0123456789ABCDEF";
-	else
-		return ("Error, invalid 'x' argument");
-	i = 18;
-	ret[i] = 0;
-	while (num)
-	{
-		ret[--i] = base[num % 16];
-		num /= 16;
-	}
-	if (i == 18)
-		ret[--i] = base[0];
-	if (x == 'p')
-		return (ft_strjoin("0x", &ret[i]));
-	return (ft_strdup(&ret[i]));
 }
 
 /*
