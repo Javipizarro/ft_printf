@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 12:42:51 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 19:18:39 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int		ft_printer(t_convspecs *cs, char *s)
 	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
 		write(1, &cs->sign, 1);
 	if ((cs->adj || cs->padd == '0') && (cs->spec == 'p' || cs->alt))
-		write(1, cs->spec == 'X' ? "0X" : "0x", 2);
+//		if (cs->spec == 'p' || cs->spec == 'x' || cs->spec == 'X')
+			write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (cs->adj == '-')
 		write(1, s, len);
 	while (cs->width-- > len && ++add)
@@ -48,7 +49,8 @@ int		ft_printer(t_convspecs *cs, char *s)
 	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
 		write(1, &cs->sign, 1);
 	if (!cs->adj && cs->padd == ' ' && (cs->spec == 'p' || cs->alt))
-		write(1, cs->spec == 'X' ? "0X" : "0x", 2);
+//		if (cs->spec == 'p' || cs->spec == 'x' || cs->spec == 'X')
+			write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (!cs->adj)
 		write(1, s, len);
 	return (len + add);
@@ -341,7 +343,7 @@ long double		ft_dv(int exp)
 	return (div);
 }
 
-int		ft_base(t_convspecs *cs, long double f, short int len, short int ex)
+int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 {
 	char				s[len + 1];
 	short int			dot;
@@ -349,28 +351,36 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int ex)
 
 	i = 0;
 	s[i++] = '0';
-	1/f < 0 ? s[i++] = '-' : 1;
-	f = (1/f < 0 ? -f : f) / ft_dv((cs->spec == 'f' || cs->spec == 'j') && ex < 0 ? 0 : ex);
+//	1 / f < 0 ? s[i++] = '-' : 1;
+	1 / f < 0 ? cs->sign = '-' : 1;
+	f = (1 / f < 0 ? -f : f) / ft_dv((cs->spec == 'f' || cs->spec == 'j') && exp < 0 ? 0 : exp);
 	while (i < len - 1 && (s[i++] = (char)f + 48))
 		f = (f - (int)f) * 10;
 	if (f > 4.99)
+//		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
+//			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
+//				s[i - 1] = '0';
 		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
-			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
-				s[i - 1] = '0';
-	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
-	dot += ((cs->spec == 'f' || cs->spec == 'j') && ex >= 0 ? ex : 0);
-	while ((cs->spec == 'a' || cs->spec == 'j') && len - 2 >= dot && s[len - 2] == '0')
-		len--;
-	len = len == dot + 1 ? dot : len;
+			1;
+//	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
+	dot = s[0] == '0' ? 2 : 1;
+	dot += ((cs->spec == 'f' || cs->spec == 'j') && exp >= 0 ? exp : 0);
+//	while ((cs->spec == 'a' || cs->spec == 'j') && len - 2 >= dot && s[len - 2] == '0')
+//		len--;
+	if ((cs->spec == 'a' || cs->spec == 'j') && !cs->alt)
+		while (len - 2 >= dot && s[len - 2] == '0')
+			len--;
+	i = !cs->alt ? 1 : 2;		
+	len = len == dot + i ? dot : len;
 	i = len - 1;
 	while (i > dot && i--)
 		s[i + 1] = s[i];
 	s[dot] = '.';
 	s[len] = 0;
+	cs->alt = 0;
 	return (ft_printer(cs, s[0] == '0' ? &s[1] : s));
 }
 
-//	char	*ft_flotoa(long double f, short int pre, char spec)
 int		ft_spec_efg(t_convspecs *cs, long double f)
 {
 	short int	exp;
@@ -391,10 +401,11 @@ int		ft_spec_efg(t_convspecs *cs, long double f)
 	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
 	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
 	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
-	len = cs->pre + 3 + (1/f < 0 ? 1 : 0);
+	len = cs->pre + 2 + (1/f < 0 ? 1 : 0);
 	len += cs->spec == 'f' && exp > 0 ? exp : 0;
 	len -= cs->spec == 'j' && exp < 0 ? exp : 0;
-//	return (ft_sjofree(ft_base(f, len, spec, exp), ft_exp(exp, spec), 3));
+	if (cs->spec == 'a' || cs->spec == 'e')
+		cs->width -= exp > 99 || exp < -99 ? 5 : 4;
 	return (ft_base(cs, f, len, exp) + ft_exp(cs, exp));
 }
 

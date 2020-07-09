@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 12:43:27 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 19:10:49 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ int		main(void)
 //	char *hey = "hey!!no";
 //	int n1 = 0;
 //	int n2 = 0;
-	double f = -0.0;
+	double f = -10.99999999;
 //	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
@@ -244,8 +244,8 @@ int		main(void)
 //	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	ft_printf("n1=%d n2=%d\n", n1, n2);
 //	printf("printf:\n");
-	printf("%d\n", printf("%%f=%f %%e=%0e %%g=%g\t", f, f, f));
+	printf("%d\n", printf("%%f=%0+#15f %%e=%0+#15e %%g=%0+#15g\t", f, f, f));
 //	printf("ft_printf:\n");
-	ft_printf("%d\n", ft_printf("%%f=%f %%e=%0e %%g=%g\t", f, f, f));
+	ft_printf("%d\n", ft_printf("%%f=%0+#15f %%e=%0+#15e %%g=%0+#15g\t", f, f, f));
 //	printf("\n");
 }
