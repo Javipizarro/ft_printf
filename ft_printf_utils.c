@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 18:57:56 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 12:42:51 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,14 +302,15 @@ void	ft_saven(t_n **n, va_list args)
 **	a decimal point appears only if it is followed by at least one digit.
 */
 
-char	*ft_exp(int exp, char spec)
+int		ft_exp(t_convspecs *cs, int exp)
 {
 	char	s[((exp > 99 || exp < -99) ? 3 : 2) + 3];
 	int		i;
 	int		j;
+	char	spec;
 
-	if (spec == 'f' || spec == 'j')
-		return (ft_strdup(""));
+	if (cs->spec == 'f' || cs->spec == 'j')
+		return (0);
 	s[0] = 'e';
 	s[1] = exp < 0 ? '-' : '+';
 	exp = exp < 0 ? -(exp) : exp;
@@ -321,7 +322,10 @@ char	*ft_exp(int exp, char spec)
 		s[--i] = (char)((exp % 10) + 48);
 		exp /= 10;
 	}
-	return (ft_strdup(s));
+	spec = cs->spec;
+	cs = ft_csinit();
+	cs->spec = spec;
+	return (ft_printer(cs, s));
 }
 
 long double		ft_dv(int exp)
@@ -337,7 +341,7 @@ long double		ft_dv(int exp)
 	return (div);
 }
 
-char	*ft_base(long double f, short int len, char spe, short int ex)
+int		ft_base(t_convspecs *cs, long double f, short int len, short int ex)
 {
 	char				s[len + 1];
 	short int			dot;
@@ -346,7 +350,7 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 	i = 0;
 	s[i++] = '0';
 	1/f < 0 ? s[i++] = '-' : 1;
-	f = (1/f < 0 ? -f : f) / ft_dv((spe == 'f' || spe == 'j') && ex < 0 ? 0 : ex);
+	f = (1/f < 0 ? -f : f) / ft_dv((cs->spec == 'f' || cs->spec == 'j') && ex < 0 ? 0 : ex);
 	while (i < len - 1 && (s[i++] = (char)f + 48))
 		f = (f - (int)f) * 10;
 	if (f > 4.99)
@@ -354,8 +358,8 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
 				s[i - 1] = '0';
 	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
-	dot += ((spe == 'f' || spe == 'j') && ex >= 0 ? ex : 0);
-	while ((spe == 'a' || spe == 'j') && len - 2 >= dot && s[len - 2] == '0')
+	dot += ((cs->spec == 'f' || cs->spec == 'j') && ex >= 0 ? ex : 0);
+	while ((cs->spec == 'a' || cs->spec == 'j') && len - 2 >= dot && s[len - 2] == '0')
 		len--;
 	len = len == dot + 1 ? dot : len;
 	i = len - 1;
@@ -363,37 +367,35 @@ char	*ft_base(long double f, short int len, char spe, short int ex)
 		s[i + 1] = s[i];
 	s[dot] = '.';
 	s[len] = 0;
-	return (ft_strdup(s[0] == '0' ? &s[1] : s));
+	return (ft_printer(cs, s[0] == '0' ? &s[1] : s));
 }
 
-char	*ft_flotoa(double f, short int pre, char spec)
+//	char	*ft_flotoa(long double f, short int pre, char spec)
+int		ft_spec_efg(t_convspecs *cs, long double f)
 {
 	short int	exp;
-	double	ff;
+	long double	ff;
 	short int	len;
 
-//	if (spec != 'e' && spec != 'f' && spec != 'g')
-//		return (ft_strdup("\n\n\t/./flotoa spec ERROR/./\n\n"));
-	if (1/f < 0)
-		printf("neg detectado");
 	exp = 0;
 	ff = 1/f < 0 ? -f : f;
 	while ((ff >= 10 && ++exp) || (ff < 1 && --exp))
 		ff = ff < 1 ? ff * 10 : ff / 10;
-	pre = spec == 'g' && pre <= 0 ? 1 : pre;
-	pre = spec == 'g' ? pre - 1 : pre;
-	pre = pre < 0 ? 0 : pre;
-	len = 1 + pre + (spec == 'f' ? exp : 0);
+	cs->pre = cs->spec == 'g' && cs->pre <= 0 ? 1 : cs->pre;
+	cs->pre = cs->spec == 'g' ? cs->pre - 1 : cs->pre;
+	cs->pre = cs->pre < 0 ? 0 : cs->pre;
+	len = 1 + cs->pre + (cs->spec == 'f' ? exp : 0);
 	ff = (1/f < 0 ? -f : f) / ft_dv(exp);
 	while (ff >= 9 && len--)
 		ff = (ff - (int)ff) * 10;
 	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
-	spec = spec == 'g' && (exp < -4 || exp > pre) ? 'a' : spec;
-	spec = spec == 'g' ? 'j' : spec;
-	len = pre + 3 + (1/f < 0 ? 1 : 0);
-	len += spec == 'f' && exp > 0 ? exp : 0;
-	len -= spec == 'j' && exp < 0 ? exp : 0;
-	return (ft_sjofree(ft_base(f, len, spec, exp), ft_exp(exp, spec), 3));
+	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
+	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
+	len = cs->pre + 3 + (1/f < 0 ? 1 : 0);
+	len += cs->spec == 'f' && exp > 0 ? exp : 0;
+	len -= cs->spec == 'j' && exp < 0 ? exp : 0;
+//	return (ft_sjofree(ft_base(f, len, spec, exp), ft_exp(exp, spec), 3));
+	return (ft_base(cs, f, len, exp) + ft_exp(cs, exp));
 }
 
 /*

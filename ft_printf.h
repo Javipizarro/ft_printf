@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/08 18:34:38 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 03:25:16 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ typedef struct		s_convspecs
 
 int			ft_asignn(t_n *current);
 t_convspecs	*ft_csinit(void);
-char		*ft_flotoa(double f, short int pre, char type);
+//char		*ft_flotoa(long double f, short int pre, char type);
+int			ft_spec_efg(t_convspecs *cs, long double f);
 char		*ft_itoax(unsigned int n, char x);
 char		*ft_litoax(unsigned long int n, char x);
 t_n			*ft_newn(t_n *prev, int nchr);
