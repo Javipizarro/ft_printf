@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 21:14:55 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 21:28:37 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ int		ft_builder(t_convspecs *cs, char **s)
 	return (0);
 }
 */
-int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
+//int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
+int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 {
 	if (cs->spec == '%')
         (*n)->nchr += ft_spec_c(cs, '%');
@@ -181,12 +182,12 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 int		ft_printf(const char *str, ...)
 {
 	va_list		args;
-	char		*s;
+//	char		*s;
 	t_n			*n;
 	t_convspecs	*cs;
 
 	va_start(args, str);
-	s = NULL;
+//	s = NULL;
 	n = ft_newn(NULL, 0);
 	while (*str)
 	{
@@ -198,23 +199,24 @@ int		ft_printf(const char *str, ...)
 			ft_flager(&str, cs);
 			ft_width_pre(&str, cs, args);
 			ft_lenth(&str, cs);
-			if (ft_spec(cs, &n, args, &s) < 0)
+//			if (ft_spec(cs, &n, args, &s) < 0)
+			if (ft_spec(cs, &n, args) < 0)
 				return (ft_err(--str));
 			free(cs);
 			cs = NULL;
 		}
-		if (s)
-		{
-			n->nchr += ft_strlen(s);
-			ft_putstr_fd(s, 1);
-			free(s);
-			s = NULL;
-		}
+//		if (s)
+//		{
+//			n->nchr += ft_strlen(s);
+//			ft_putstr_fd(s, 1);
+//			free(s);
+//			s = NULL;
+//		}
 	}
 	va_end(args);
 	return (ft_asignn(n));
 }
-/*
+
 int		main(void)
 {
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -255,4 +257,3 @@ int		main(void)
 	ft_printf("%d\n", ft_printf("%%f=%0+15.f %%e=%0+15.e %%g=%0+15.g\t", f, f, f));
 
 }
-*/

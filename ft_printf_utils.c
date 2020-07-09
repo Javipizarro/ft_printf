@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 21:02:20 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 21:26:18 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,12 +358,13 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 	f = (1 / f < 0 ? -f : f) / ft_dv((cs->spec == 'f' || cs->spec == 'j') && exp < 0 ? 0 : exp);
 	while (i < len - 1 && (s[i++] = (char)f + 48))
 		f = (f - (int)f) * 10;
-	if (f > 4.99)
+//	if (f > 4.99)
 //		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
 //			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
 //				s[i - 1] = '0';
-		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
-			1;
+	if (f > 4.99 && i--)
+		while ((s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
+			i--;
 //	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
 	dot = s[0] == '0' ? 2 : 1;
 	dot += ((cs->spec == 'f' || cs->spec == 'j') && exp >= 0 ? exp : 0);
