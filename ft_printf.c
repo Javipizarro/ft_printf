@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 19:10:49 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 21:14:55 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	ft_lenth(const char **str, t_convspecs *cs)
 	cs->pre = 6 : 1;
 //	printf("\nlen =>\t'%c'\n", cs->len);
 }
-
+/*
 int		ft_builder(t_convspecs *cs, char **s)
 {
 	cs->width -= ft_strlen(*s);
@@ -126,7 +126,7 @@ int		ft_builder(t_convspecs *cs, char **s)
 	
 	return (0);
 }
-
+*/
 int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 {
 	if (cs->spec == '%')
@@ -174,7 +174,8 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
 		ft_saven(n, args/*, cs*/);
 	else
 		return (-1);
-	return (*s ? ft_builder(cs, s) : 0);
+//	return (*s ? ft_builder(cs, s) : 0);
+	return (0);
 }
 
 int		ft_printf(const char *str, ...)
@@ -213,7 +214,7 @@ int		ft_printf(const char *str, ...)
 	va_end(args);
 	return (ft_asignn(n));
 }
-
+/*
 int		main(void)
 {
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -244,8 +245,14 @@ int		main(void)
 //	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	ft_printf("n1=%d n2=%d\n", n1, n2);
 //	printf("printf:\n");
-	printf("%d\n", printf("%%f=%0+#15f %%e=%0+#15e %%g=%0+#15g\t", f, f, f));
+//	printf("%d\n", printf("this %f float", 1.5));
 //	printf("ft_printf:\n");
-	ft_printf("%d\n", ft_printf("%%f=%0+#15f %%e=%0+#15e %%g=%0+#15g\t", f, f, f));
+//	ft_printf("%d\n", ft_printf("this %f float", 1.5));
 //	printf("\n");
+
+//	DAN PROBLEMAS
+	printf("%d\n", printf("%%f=%0+15.f %%e=%0+15.e %%g=%0+15.g\t", f, f, f));
+	ft_printf("%d\n", ft_printf("%%f=%0+15.f %%e=%0+15.e %%g=%0+15.g\t", f, f, f));
+
 }
+*/

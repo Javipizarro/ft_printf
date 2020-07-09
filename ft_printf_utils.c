@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 19:18:39 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/09 21:02:20 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ int		ft_printer(t_convspecs *cs, char *s)
 
 	add = 0;
 	len = ft_strlen(s);
-	cs->width -=  cs->sign ? 1 : 0;
-	cs->width -=  (cs->spec == 'p' || cs->alt) ? 2 : 0;
-	add += (cs->spec == 'p' || cs->alt) ? 2 : 0;
+	cs->width -= cs->sign ? 1 : 0;
+//	cs->width -= (cs->spec == 'p' || cs->alt) ? 2 : 0;
+//	add += (cs->spec == 'p' || cs->alt) ? 2 : 0;
+	cs->width -= cs->spec == 'p' || cs->alt ? 2 : 0;
+	add += cs->spec == 'p' || cs->alt ? 2 : 0;
 	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
 		write(1, &cs->sign, 1);
 	if ((cs->adj || cs->padd == '0') && (cs->spec == 'p' || cs->alt))
@@ -383,25 +385,32 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 
 int		ft_spec_efg(t_convspecs *cs, long double f)
 {
+//	printf("padd=/./%c/./", cs->padd);
 	short int	exp;
 	long double	ff;
 	short int	len;
 
 	exp = 0;
-	ff = 1/f < 0 ? -f : f;
+	ff = 1 / f < 0 ? -f : f;
 	while ((ff >= 10 && ++exp) || (ff < 1 && --exp))
 		ff = ff < 1 ? ff * 10 : ff / 10;
-	cs->pre = cs->spec == 'g' && cs->pre <= 0 ? 1 : cs->pre;
-	cs->pre = cs->spec == 'g' ? cs->pre - 1 : cs->pre;
-	cs->pre = cs->pre < 0 ? 0 : cs->pre;
+//	cs->pre = cs->spec == 'g' && cs->pre < 0 ? 1 : cs->pre;
+//	cs->pre = cs->spec == 'g' ? cs->pre - 1 : cs->pre;
+//	cs->pre = cs->pre < 0 ? 0 : cs->pre;
+	cs->pre = cs->pre < 0 ? 6 : cs->pre;
+	cs->pre = cs->spec == 'g' && cs->pre > 0 ? cs->pre - 1 : cs->pre;
 	len = 1 + cs->pre + (cs->spec == 'f' ? exp : 0);
 	ff = (1/f < 0 ? -f : f) / ft_dv(exp);
 	while (ff >= 9 && len--)
 		ff = (ff - (int)ff) * 10;
-	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
-	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
-	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
-	len = cs->pre + 2 + (1/f < 0 ? 1 : 0);
+//	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
+	exp += len <= 0 && ff > 4.99 ? 1 : 0;
+//	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
+//	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
+	if (cs->spec == 'g')
+	 	cs->spec = exp < -4 || exp > cs->pre ? 'a' : 'j';
+//	len = cs->pre + 3 + (1 / f < 0 ? 1 : 0);
+	len = cs->pre + 3;
 	len += cs->spec == 'f' && exp > 0 ? exp : 0;
 	len -= cs->spec == 'j' && exp < 0 ? exp : 0;
 	if (cs->spec == 'a' || cs->spec == 'e')
