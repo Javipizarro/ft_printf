@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 14:21:15 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 18:22:42 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int		ft_printf(const char *str, ...)
 	va_end(args);
 	return (ft_asignn(n));
 }
-
+/*
 int		main(void)
 {
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -230,4 +230,4 @@ int		main(void)
 //	DAN PROBLEMAS
 	printf("%d\n", printf("%.0f\t", 3.5));
 	ft_printf("%d\n", ft_printf("%.0f\t", 3.5));
-}
+}*/

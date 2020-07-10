@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 14:17:05 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 18:33:24 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 	int			i;
 	char		*base;
 
+	!num ? cs->alt = 0 : 1;
 	if (cs->padd == '0' && (cs->spec == 'p' || cs->alt))
 	{
 		cs->pre = cs->pre < cs->width - 2 ? cs->width - 2 : cs->pre;
