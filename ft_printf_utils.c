@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 19:22:04 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 20:02:21 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,30 +251,31 @@ int		ft_asignn(t_n *current)
 /*
 **	Algo hará
 */
-/*
+
 void	ft_saven(t_n **n, va_list args, t_convspecs *cs)
 {
 	if (cs->len == 'H')
-		(*n)->arg = (signed char *)va_arg(args, int*);
+		(*n)->arg = (long long int*)va_arg(args, signed char*);
 	else if (cs->len == 'h')
-		(*n)->arg = (short int *)va_arg(args, int*);
+		(*n)->arg = (long long int*)va_arg(args, short int*);
 	else if (!cs->len)
-		(*n)->arg = va_arg(args, int*);
+		(*n)->arg = (long long int*)va_arg(args, int*);
 	else if (cs->len == 'l')
-		(*n)->arg = (long int *)va_arg(args, int*);
+		(*n)->arg = (long long int*)va_arg(args, long int*);
 	else if (cs->len == 'L')
-		(*n)->arg = (long long int *)va_arg(args, int*);
+		(*n)->arg = (long long int*)va_arg(args, long long int*);
 	(*n)->next = ft_newn(*n, (*n)->nchr);
 	*n = (*n)->next;
 }
-*/
+
+/*
 void	ft_saven(t_n **n, va_list args)
 {
 	(*n)->arg = va_arg(args, int*);
 	(*n)->next = ft_newn(*n, (*n)->nchr);
 	*n = (*n)->next;
 }
-
+*/
 /*
 **	The ft_flotoa function group, converts the double 'f' according to
 **	the conversion specifier 'spec' and precision 'pre'.

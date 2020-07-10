@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 03:25:16 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 19:51:54 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 typedef struct		s_n
 {
-	int	/*void*/	*arg;
-	int				nchr;
+	long long int	*arg;
+	long long int	nchr;
 	struct s_n		*prev;
 	struct s_n		*next;
 }					t_n;
@@ -39,13 +39,12 @@ typedef struct		s_convspecs
 
 int			ft_asignn(t_n *current);
 t_convspecs	*ft_csinit(void);
-//char		*ft_flotoa(long double f, short int pre, char type);
 int			ft_spec_efg(t_convspecs *cs, long double f);
 char		*ft_itoax(unsigned int n, char x);
 char		*ft_litoax(unsigned long int n, char x);
 t_n			*ft_newn(t_n *prev, int nchr);
 int			ft_printf(const char *str, ...);
-void		ft_saven(t_n **n, va_list args/*, t_convspecs *cs*/);
+void		ft_saven(t_n **n, va_list args, t_convspecs *cs);
 int			ft_spec_c(t_convspecs *cs, char c);
 int			ft_spec_u(t_convspecs *cs, unsigned long long int num);
 int			ft_spec_di(t_convspecs *cs, long long int num);
