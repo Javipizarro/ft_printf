@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 18:22:42 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 19:22:48 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_lenth(const char **str, t_convspecs *cs)
 	cs->spec == 'u' || cs->spec == 'p' || cs->spec == 'n' ? cs->alt = 0 : 1;
 	cs->pre < 0 && (cs->spec == 'e' || cs->spec == 'f' || cs->spec == 'g') ?
 	cs->pre = 6 : 1;
-//	printf("\nlen =>\t'%c'\n", cs->len);
+//	printf("\nlen =>\t'%c'\tcs->spec =>\t'%c'\n", cs->len, cs->spec);
 }
 
 int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
@@ -129,9 +129,9 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 	else if (cs->spec == 'u' && !cs->len)
 		(*n)->nchr += ft_spec_u(cs, (unsigned int)va_arg(args, int));
 	else if (cs->spec == 'u' && cs->len == 'l')
-		(*n)->nchr += ft_spec_u(cs, (unsigned long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_u(cs, (unsigned long int)va_arg(args, long int));
 	else if (cs->spec == 'u' && cs->len == 'L')
-		(*n)->nchr += ft_spec_u(cs, (unsigned long long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_u(cs, (unsigned long long int)va_arg(args, long long int));
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'H')
 		(*n)->nchr += ft_spec_di(cs, (signed char)va_arg(args, int));
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'h')
@@ -139,9 +139,9 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 	else if ((cs->spec == 'd' || cs->spec == 'i') && !cs->len)
 		(*n)->nchr += ft_spec_di(cs, (int)va_arg(args, int));
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'l')
-		(*n)->nchr += ft_spec_di(cs, (long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_di(cs, (long int)va_arg(args, long int));
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'L')
-		(*n)->nchr += ft_spec_di(cs, (long long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_di(cs, (long long int)va_arg(args, long long int));
 	else if (cs->spec == 'p')
 		(*n)->nchr += ft_spec_px(cs ,(unsigned long int)va_arg(args, void*));
 	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'H')
@@ -151,9 +151,9 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 	else if ((cs->spec == 'x' || cs->spec == 'X') && !cs->len)
 		(*n)->nchr += ft_spec_px(cs ,(unsigned int)va_arg(args, int));
 	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'l')
-		(*n)->nchr += ft_spec_px(cs ,(unsigned long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_px(cs ,(unsigned long int)va_arg(args, long int));
 	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'L')
-		(*n)->nchr += ft_spec_px(cs ,(unsigned long long int)va_arg(args, int));
+		(*n)->nchr += ft_spec_px(cs ,(unsigned long long int)va_arg(args, long long int));
 		
 	else if (cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g')
 		(*n)->nchr += ft_spec_efg(cs, (long double)va_arg(args, double));
@@ -227,7 +227,8 @@ int		main(void)
 //	ft_printf("%d\n", ft_printf("this %f float", 1.5));
 //	printf("\n");
 
-//	DAN PROBLEMAS
-	printf("%d\n", printf("%.0f\t", 3.5));
-	ft_printf("%d\n", ft_printf("%.0f\t", 3.5));
-}*/
+//	DAN PROBLEMAS 9223372036854775807
+	printf("%d\n", printf("%lld\n", 9223372036854775807));
+	printf("%d\n", ft_printf("%lld\n", 9223372036854775807));
+}
+*/

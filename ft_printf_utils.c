@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 18:33:24 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 19:22:04 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int		ft_spec_di(t_convspecs *cs, long long int num)
 {
 	char	s[cs->pre > 21 ? cs->pre : 21];
 	int		i;
-
 	i = (cs->pre > 21 ? cs->pre : 21) - 1;
 	s[i] = 0;
 	!num && cs->pre < 0 ? s[--i] = '0' : 1;
@@ -401,15 +400,3 @@ int		ft_spec_efg(t_convspecs *cs, long double f)
 		cs->width -= exp > 99 || exp < -99 ? 5 : 4;
 	return (ft_base(cs, f, len, exp) + ft_exp(cs, exp));
 }
-
-/*
-int		main(void)
-{
-	double d = -9.999e4;
-	char *str = ft_flotoa(d, 4, 'g');
-	printf("/./%s/./\n", str);
-	printf("/./%.4g/./\n", d);
-	free(str);
-	str = NULL;
-}
-*/
