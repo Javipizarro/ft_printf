@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 12:00:29 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 14:17:05 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,11 @@ int		ft_printer(t_convspecs *cs, char *s)
 	add = 0;
 	len = ft_strlen(s);
 	cs->width -= cs->sign ? 1 : 0;
-//	cs->width -= (cs->spec == 'p' || cs->alt) ? 2 : 0;
-//	add += (cs->spec == 'p' || cs->alt) ? 2 : 0;
 	cs->width -= cs->spec == 'p' || cs->alt ? 2 : 0;
 	add += cs->spec == 'p' || cs->alt ? 2 : 0;
 	if (cs->sign && (cs->adj || cs->padd == '0') && ++add)
 		write(1, &cs->sign, 1);
 	if ((cs->adj || cs->padd == '0') && (cs->spec == 'p' || cs->alt))
-//		if (cs->spec == 'p' || cs->spec == 'x' || cs->spec == 'X')
 			write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (cs->adj == '-')
 		write(1, s, len);
@@ -51,7 +48,6 @@ int		ft_printer(t_convspecs *cs, char *s)
 	if (cs->sign && !cs->adj && cs->padd == ' ' && ++add)
 		write(1, &cs->sign, 1);
 	if (!cs->adj && cs->padd == ' ' && (cs->spec == 'p' || cs->alt))
-//		if (cs->spec == 'p' || cs->spec == 'x' || cs->spec == 'X')
 			write(1, cs->spec == 'X' ? "0X" : "0x", 2);
 	if (!cs->adj)
 		write(1, s, len);
@@ -353,50 +349,33 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 
 	i = 0;
 	s[i++] = '0';
-//	1 / f < 0 ? s[i++] = '-' : 1;
 	1 / f < 0 ? cs->sign = '-' : 1;
 	f = (1 / f < 0 ? -f : f) / ft_dv((cs->spec == 'f' || cs->spec == 'j') && exp < 0 ? 0 : exp);
 	while (i < len - 1 && (s[i++] = (char)f + 48))
 		f = (f - (int)f) * 10;
-//	if (f > 4.99)
-//		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
-//			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
-//				s[i - 1] = '0';
-//printf("exp=%d", exp);
-//printf("pre=%d", cs->pre);
-//printf("i=%d", i);
-//
-	if (f >= 5 && i <= exp + cs->pre + 1 && i--)
+	if ((f > 5 || (f == 5 && s[i - 1] % 2)) && i--)
 		while ((s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
 			i--;
-//	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
 	dot = s[0] == '0' ? 2 : 1;
 	dot += ((cs->spec == 'f' || cs->spec == 'j') && exp >= 0 ? exp : 0);
-//	while ((cs->spec == 'a' || cs->spec == 'j') && len - 2 >= dot && s[len - 2] == '0')
-//		len--;
 	if ((cs->spec == 'a' || cs->spec == 'j') && !cs->alt)
 		while (len - 2 >= dot && s[len - 2] == '0')
 			len--;
+	if (len == dot + (!cs->alt ? 1 : 2))
+		len = dot + (!cs->alt ? 0 : 2);
 	i = !cs->alt ? 1 : 2;
-//printf("dot=/./%i/./", dot);
-//printf("len=/./%i/./\n", len);
 	len = len == dot + i ? dot + i : len;
 	i = len - 1;
 	while (i > dot && i--)
 		s[i + 1] = s[i];
-//printf("s=/./%s/./", s);
-//printf("dot=/./%i/./", dot);
-//printf("len=/./%i/./", len);
 	s[dot] = '.';
 	s[len] = 0;
 	cs->alt = 0;
-//printf("s=/./%s/./", s);
 	return (ft_printer(cs, s[0] == '0' ? &s[1] : s));
 }
 
 int		ft_spec_efg(t_convspecs *cs, long double f)
 {
-//	printf("padd=/./%c/./", cs->padd);
 	short int	exp;
 	long double	ff;
 	short int	len;
@@ -405,22 +384,15 @@ int		ft_spec_efg(t_convspecs *cs, long double f)
 	ff = 1 / f < 0 ? -f : f;
 	while ((ff >= 10 && ++exp) || (ff < 1 && --exp))
 		ff = ff < 1 ? ff * 10 : ff / 10;
-//	cs->pre = cs->spec == 'g' && cs->pre < 0 ? 1 : cs->pre;
-//	cs->pre = cs->spec == 'g' ? cs->pre - 1 : cs->pre;
-//	cs->pre = cs->pre < 0 ? 0 : cs->pre;
 	cs->pre = cs->pre < 0 ? 6 : cs->pre;
 	cs->pre = cs->spec == 'g' && cs->pre > 0 ? cs->pre - 1 : cs->pre;
 	len = 1 + cs->pre + (cs->spec == 'f' ? exp : 0);
 	ff = (1/f < 0 ? -f : f) / ft_dv(exp);
 	while (ff >= 9 && len--)
 		ff = (ff - (int)ff) * 10;
-//	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
 	exp += len <= 0 && ff >= 5 ? 1 : 0;
-//	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
-//	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
 	if (cs->spec == 'g')
 	 	cs->spec = exp < -4 || exp > cs->pre ? 'a' : 'j';
-//	len = cs->pre + 3 + (1 / f < 0 ? 1 : 0);
 	len = cs->pre + 3;
 	len += cs->spec == 'f' && exp > 0 ? exp : 0;
 	len -= cs->spec == 'j' && exp < 0 ? exp : 0;

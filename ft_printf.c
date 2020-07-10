@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 00:22:38 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 12:24:52 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,6 @@ int		main(void)
 //	printf("\n");
 
 //	DAN PROBLEMAS
-	printf("%d\n", printf("%.0f\t", -4.5));
-	ft_printf("%d\n", ft_printf("%.0f\t", -4.5));
+	printf("%d\n", printf("%.0f\t", 3.5));
+	ft_printf("%d\n", ft_printf("%.0f\t", 3.5));
 }
