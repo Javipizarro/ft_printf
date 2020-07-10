@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 21:26:18 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 12:00:29 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,7 +362,11 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 //		while (i-- && (s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
 //			if (s[i - 1] == '-' ? s[i - 2] = '-' : 0)
 //				s[i - 1] = '0';
-	if (f > 4.99 && i--)
+//printf("exp=%d", exp);
+//printf("pre=%d", cs->pre);
+//printf("i=%d", i);
+//
+	if (f >= 5 && i <= exp + cs->pre + 1 && i--)
 		while ((s[i] = s[i] == '9' ? '0' : (s[i]) + 1) == '0')
 			i--;
 //	dot = ((s[0] == '0' || s[0] == '-') ? 2 : 1) + (s[1] == '-' ? 1 : 0);
@@ -373,14 +377,20 @@ int		ft_base(t_convspecs *cs, long double f, short int len, short int exp)
 	if ((cs->spec == 'a' || cs->spec == 'j') && !cs->alt)
 		while (len - 2 >= dot && s[len - 2] == '0')
 			len--;
-	i = !cs->alt ? 1 : 2;		
-	len = len == dot + i ? dot : len;
+	i = !cs->alt ? 1 : 2;
+//printf("dot=/./%i/./", dot);
+//printf("len=/./%i/./\n", len);
+	len = len == dot + i ? dot + i : len;
 	i = len - 1;
 	while (i > dot && i--)
 		s[i + 1] = s[i];
+//printf("s=/./%s/./", s);
+//printf("dot=/./%i/./", dot);
+//printf("len=/./%i/./", len);
 	s[dot] = '.';
 	s[len] = 0;
 	cs->alt = 0;
+//printf("s=/./%s/./", s);
 	return (ft_printer(cs, s[0] == '0' ? &s[1] : s));
 }
 
@@ -405,7 +415,7 @@ int		ft_spec_efg(t_convspecs *cs, long double f)
 	while (ff >= 9 && len--)
 		ff = (ff - (int)ff) * 10;
 //	exp = exp + (len <= 0 && ff > 4.99 ? 1 : 0);
-	exp += len <= 0 && ff > 4.99 ? 1 : 0;
+	exp += len <= 0 && ff >= 5 ? 1 : 0;
 //	cs->spec = cs->spec == 'g' && (exp < -4 || exp > cs->pre) ? 'a' : cs->spec;
 //	cs->spec = cs->spec == 'g' ? 'j' : cs->spec;
 	if (cs->spec == 'g')

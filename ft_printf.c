@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/09 21:28:37 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 00:22:38 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ void	ft_lenth(const char **str, t_convspecs *cs)
 			cs->len = 'h';
 	}
 	cs->spec = *(*str)++;
-	!(cs->spec == 'c' || cs->spec == 's') && cs->pre >= 0 ? cs->padd = ' ' : 1;
+	!(cs->spec == 'c' || cs->spec == 's' || cs->spec == 'e' ||
+	cs->spec == 'f' || cs->spec == 'g') && cs->pre >= 0 ? cs->padd = ' ' : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'u' || cs->spec == 'p' ||
 	cs->spec == 'x' || cs->spec == 'X' ? cs->sign = 0 : 1;
 	cs->spec == 'c' || cs->spec == 's' || cs->spec == 'd' || cs->spec == 'i' ||
@@ -232,14 +233,14 @@ int		main(void)
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-//	char c = 'J';
+	char c = 'J';
 //	int i = 2846;
 //	unsigned int u = 4698;
 //	int pre = 6;
 //	char *hey = "hey!!no";
 //	int n1 = 0;
 //	int n2 = 0;
-	double f = -10.99999999;
+//	double f = -10.99999999;
 //	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%n %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %n%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
@@ -253,7 +254,6 @@ int		main(void)
 //	printf("\n");
 
 //	DAN PROBLEMAS
-	printf("%d\n", printf("%%f=%0+15.f %%e=%0+15.e %%g=%0+15.g\t", f, f, f));
-	ft_printf("%d\n", ft_printf("%%f=%0+15.f %%e=%0+15.e %%g=%0+15.g\t", f, f, f));
-
+	printf("%d\n", printf("%.0f\t", -4.5));
+	ft_printf("%d\n", ft_printf("%.0f\t", -4.5));
 }
