@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 12:24:52 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/10 14:21:15 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,22 +113,7 @@ void	ft_lenth(const char **str, t_convspecs *cs)
 	cs->pre = 6 : 1;
 //	printf("\nlen =>\t'%c'\n", cs->len);
 }
-/*
-int		ft_builder(t_convspecs *cs, char **s)
-{
-	cs->width -= ft_strlen(*s);
-	if (cs->padd == ' ' && cs->sign)
-		*s = ft_sjofree(ft_charlloc(1, cs->sign), *s, 3);
-	if ((cs->width -= (cs->sign ? 1 : 0)) > 0)
-		*s = cs->adj ? ft_sjofree(*s, ft_charlloc(cs->width, cs->padd), 3)
-		: ft_sjofree(ft_charlloc(cs->width, cs->padd), *s, 3);
-	if (cs->sign && cs->padd == '0')
-		*s = ft_sjofree(ft_charlloc(1, cs->sign), *s, 3);
-	
-	return (0);
-}
-*/
-//int		ft_spec(t_convspecs *cs, t_n **n, va_list args, char **s)
+
 int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 {
 	if (cs->spec == '%')
@@ -176,19 +161,16 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 		ft_saven(n, args/*, cs*/);
 	else
 		return (-1);
-//	return (*s ? ft_builder(cs, s) : 0);
 	return (0);
 }
 
 int		ft_printf(const char *str, ...)
 {
 	va_list		args;
-//	char		*s;
 	t_n			*n;
 	t_convspecs	*cs;
 
 	va_start(args, str);
-//	s = NULL;
 	n = ft_newn(NULL, 0);
 	while (*str)
 	{
@@ -200,19 +182,11 @@ int		ft_printf(const char *str, ...)
 			ft_flager(&str, cs);
 			ft_width_pre(&str, cs, args);
 			ft_lenth(&str, cs);
-//			if (ft_spec(cs, &n, args, &s) < 0)
 			if (ft_spec(cs, &n, args) < 0)
 				return (ft_err(--str));
 			free(cs);
 			cs = NULL;
 		}
-//		if (s)
-//		{
-//			n->nchr += ft_strlen(s);
-//			ft_putstr_fd(s, 1);
-//			free(s);
-//			s = NULL;
-//		}
 	}
 	va_end(args);
 	return (ft_asignn(n));
