@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 20:02:21 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 11:41:11 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int		ft_spec_c(t_convspecs *cs, char c)
 
 int		ft_spec_di(t_convspecs *cs, long long int num)
 {
-	char	s[cs->pre > 21 ? cs->pre : 21];
+	char	s[(cs->pre > 21 ? cs->pre : 21) + 1];
 	int		i;
-	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	i = cs->pre > 21 ? cs->pre : 21;
 	s[i] = 0;
 	!num && cs->pre < 0 ? s[--i] = '0' : 1;
 	if (num < 0 && 	(cs->sign = '-'))
@@ -138,7 +138,7 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 
 int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 {
-	char		s[cs->pre > 21 ? cs->pre : 21];
+	char		s[(cs->pre > 21 ? cs->pre : 21) + 1];
 	int			i;
 	char		*base;
 
@@ -148,7 +148,7 @@ int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 		cs->pre = cs->pre < cs->width - 2 ? cs->width - 2 : cs->pre;
 		cs->width = 0;
 	}
-	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	i = cs->pre > 21 ? cs->pre : 21;
 	base = cs->spec == 'X' ? "0123456789ABCDEF" : "0123456789abcdef";
 	s[i] = 0;
 	!num && cs->pre < 0 ? s[--i] = base[0] : 1;
@@ -168,10 +168,10 @@ int		ft_spec_px(t_convspecs *cs, unsigned long long int num)
 
 int		ft_spec_u(t_convspecs *cs, unsigned long long int num)
 {
-	char	s[cs->pre > 21 ? cs->pre : 21];
+	char	s[(cs->pre > 21 ? cs->pre : 21) + 1];
 	int		i;
 
-	i = (cs->pre > 21 ? cs->pre : 21) - 1;
+	i = cs->pre > 21 ? cs->pre : 21;
 	s[i] = 0;
 	!num && cs->pre < 0 ? s[--i] = '0' : 1;
 	while (cs->pre-- > 0 || num)
