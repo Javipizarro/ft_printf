@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/13 18:35:40 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 21:59:32 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 **	a decimal point appears only if it is followed by at least one digit.
 */
 
-void			ft_alternative(t_convspecs *cs, int *len, int *dot, int *i)
+void		ft_alternative(t_convspecs *cs, int *len, int *dot, int *i)
 {
 	if (*len == *dot + (!cs->alt ? 1 : 2))
 		*len = *dot + (!cs->alt ? 0 : 2);
@@ -49,7 +49,7 @@ void			ft_alternative(t_convspecs *cs, int *len, int *dot, int *i)
 	cs->alt = 0;
 }
 
-long double		ft_dv(int exp)
+long double	ft_dv(int exp)
 {
 	long double	div;
 
@@ -62,7 +62,7 @@ long double		ft_dv(int exp)
 	return (div);
 }
 
-int				ft_exp(t_convspecs *cs, int exp)
+int			ft_exp(t_convspecs *cs, int exp)
 {
 	char	s[((exp > 99 || exp < -99) ? 3 : 2) + 3];
 	int		i;
@@ -88,7 +88,7 @@ int				ft_exp(t_convspecs *cs, int exp)
 	return (ft_printer(cs, s));
 }
 
-int				ft_base(t_convspecs *cs, long double f, int len, int exp)
+int			ft_base(t_convspecs *cs, long double f, int len, int exp)
 {
 	char		s[len + 1];
 	int			dot;
@@ -117,11 +117,11 @@ int				ft_base(t_convspecs *cs, long double f, int len, int exp)
 	return (ft_printer(cs, s[0] == '0' ? &s[1] : s));
 }
 
-int				ft_spec_efg(t_convspecs *cs, long double f)
+int			ft_spec_efg(t_convspecs *cs, long double f)
 {
-	int			exp;
+	short int	exp;
 	long double	ff;
-	int			len;
+	short int	len;
 
 	exp = 0;
 	ff = 1 / f < 0 ? -f : f;

@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/13 16:44:58 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 21:58:53 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,9 @@ int		ft_spec2(t_convspecs *cs, t_n **n, va_list args)
 	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'L')
 		(*n)->nchr += ft_spec_px(cs,
 		(unsigned long long int)va_arg(args, long long int));
-	else if ((cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g') &&
-	!cs->len)
-		(*n)->nchr += ft_spec_efg(cs,
-		(double)va_arg(args, double));
+	else if ((cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g')
+	&& !cs->len)
+		(*n)->nchr += ft_spec_efg(cs, (double)va_arg(args, double));
 	else if ((cs->spec == 'f' || cs->spec == 'e' || cs->spec == 'g')
 	&& cs->len == 'L')
 		(*n)->nchr += ft_spec_efg(cs, (long double)va_arg(args, long double));
