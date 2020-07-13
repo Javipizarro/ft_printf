@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/31 17:24:58 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/13 11:41:11 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:52:25 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,33 @@ int		ft_spec_s(t_convspecs *cs, char *s)
 	if (!cs->adj)
 		write(1, s, len);
 	return (len + padd);
+}
+
+/*
+**	Prints, in octal base format, the string  that represents the
+**	unsigned long long integer 'num' once applied the changes specified
+**	in the t_convspecs struct pointed by *cs.
+**	Returns the number of characters printed.
+*/
+
+int		ft_spec_o(t_convspecs *cs, unsigned long long int num)
+{
+	char		s[(cs->pre > 23 ? cs->pre : 23) + 2];
+	int			i;
+	char		*base;
+
+	i = (cs->pre > 23 ? cs->pre : 23) + 1;
+	base ="01234567";
+	s[i] = 0;
+	!num && cs->pre < 0 ? s[--i] = base[0] : 1;
+	while (cs->pre-- > 0 || num)
+	{
+		s[--i] = base[num % 8];
+		num /= 8;
+	}
+	cs->alt && s[i] != base[0] ? s[--i] = base[0] : 1;
+	cs->alt = 0;
+	return(ft_printer(cs, &s[i]));
 }
 
 /*

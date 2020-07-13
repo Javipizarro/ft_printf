@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/10 20:08:35 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 12:54:04 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,18 @@ int		ft_spec(t_convspecs *cs, t_n **n, va_list args)
 		(*n)->nchr += ft_spec_di(cs, (long int)va_arg(args, long int));
 	else if ((cs->spec == 'd' || cs->spec == 'i') && cs->len == 'L')
 		(*n)->nchr += ft_spec_di(cs, (long long int)va_arg(args, long long int));
+
+	else if (cs->spec == 'o' && cs->len == 'H')
+		(*n)->nchr += ft_spec_o(cs ,(unsigned char)va_arg(args, int));
+	else if (cs->spec == 'o' && cs->len == 'h')
+		(*n)->nchr += ft_spec_o(cs ,(unsigned short int)va_arg(args, int));
+	else if (cs->spec == 'o' && !cs->len)
+		(*n)->nchr += ft_spec_o(cs ,(unsigned int)va_arg(args, int));
+	else if (cs->spec == 'o' && cs->len == 'l')
+		(*n)->nchr += ft_spec_o(cs ,(unsigned long int)va_arg(args, long int));
+	else if (cs->spec == 'o' && cs->len == 'L')
+		(*n)->nchr += ft_spec_o(cs ,(unsigned long long int)va_arg(args, long long int));
+
 	else if (cs->spec == 'p')
 		(*n)->nchr += ft_spec_px(cs ,(unsigned long int)va_arg(args, void*));
 	else if ((cs->spec == 'x' || cs->spec == 'X') && cs->len == 'H')
@@ -192,7 +204,7 @@ int		ft_printf(const char *str, ...)
 	va_end(args);
 	return (ft_asignn(n));
 }
-/*
+
 int		main(void)
 {
 //	printf("u\t%%hhu=%hhu %%hu=%hu %%u=%u %%lu=%lu %%llu=%llu\n", CHAR_MAX, USHRT_MAX, UINT_MAX, ULONG_MAX, ULLONG_MAX);
@@ -208,20 +220,20 @@ int		main(void)
 //	printf("n1=%d n2=%d\n", n1, n2);
 //	n1 = 0;
 //	n2 = 0;
-	char c = 'J';
-	int i = 2846;
-	unsigned int u = 4698;
-	int pre = 6;
-	char *hey = "hey!!no";
-	signed char n1 = 0;
-	long long int n2 = 0;
-	double f = -10.99999999;
-	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%hhn %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %lln%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	printf("n1=%hhd n2=%lld\n", n1, n2);
-	n1 = 0;
-	n2 = 0;
-	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%hhn %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %lln%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
-	ft_printf("n1=%hhd n2=%lld\n", n1, n2);
+//	char c = 'J';
+//	int i = 2846;
+//	unsigned int u = 4698;
+//	int pre = 6;
+//	char *hey = "hey!!no";
+//	signed char n1 = 0;
+//	long long int n2 = 0;
+//	double f = -10.99999999;
+//	printf("/./n=%i/./ ", printf("%%c=%-5c %%s=%8.5s%hhn %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %lln%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	printf("n1=%hhd n2=%lld\n", n1, n2);
+//	n1 = 0;
+//	n2 = 0;
+//	ft_printf("/./n=%i/./ ", ft_printf("%%c=%-5c %%s=%8.5s%hhn %%p=%18p %%d=/./%+8.5d/./ %%i=/./%-+6.*i/./ %lln%%u=%.*u %%x=%#.12x %%X=%#9.6X %%n=%d %%f=%+012f %%e=%e %%g=%g ", c, hey, &n1, &hey, i, pre, i, &n2, pre, u, i, i, n1, f, f, f));
+//	ft_printf("n1=%hhd n2=%lld\n", n1, n2);
 //	printf("printf:\n");
 //	printf("%d\n", printf("this %f float", 1.5));
 //	printf("ft_printf:\n");
@@ -229,5 +241,22 @@ int		main(void)
 //	printf("\n");
 
 //	DAN PROBLEMAS 
+static unsigned long long int		mx_u = ULLONG_MAX;
+static char				mx_c = 'G';
+static char			   *mx_s = "Hello, World!";
+static int				mx_i = 42;
+static double			mx_f = 0.625;
+static long				mx_li =  4223372036854775800;
+static long long		mx_lli = 3223372036654775200;
+static short			mx_hi = -3244;
+static char				mx_hhi = 'F';
+
+
+
+	printf("/./n=%i/./ ", printf(
+			"  %.llo    %u    %li    %s    %X    %lli  \n",
+			mx_u, mx_u, mx_li, mx_s, mx_u, mx_lli));
+	ft_printf("/./n=%i/./ ", ft_printf(
+			"  %.llo    %u    %li    %s    %X    %lli  \n",
+			mx_u, mx_u, mx_li, mx_s, mx_u, mx_lli));
 }
-*/
