@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/01 00:58:45 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/13 12:54:04 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 13:42:33 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,10 +253,10 @@ static char				mx_hhi = 'F';
 
 
 
-	printf("/./n=%i/./ ", printf(
-			"  %.llo    %u    %li    %s    %X    %lli  \n",
-			mx_u, mx_u, mx_li, mx_s, mx_u, mx_lli));
-	ft_printf("/./n=%i/./ ", ft_printf(
-			"  %.llo    %u    %li    %s    %X    %lli  \n",
-			mx_u, mx_u, mx_li, mx_s, mx_u, mx_lli));
+	printf("/./n=%i/./\n", printf(
+			"%x%x%x%x%x%X%X%X%X%X\n",
+			mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u));
+	ft_printf("/./n=%i/./\n", ft_printf(
+			"%x%x%x%x%x%X%X%X%X%X\n",
+			mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u, mx_u));
 }
