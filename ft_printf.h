@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/25 12:05:59 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/13 12:47:28 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 19:04:09 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,41 @@
 # include <limits.h>
 # include "./libft/libft.h"
 
-typedef struct		s_n
+typedef struct	s_n
 {
 	long long int	*arg;
 	long long int	nchr;
 	struct s_n		*prev;
 	struct s_n		*next;
-}					t_n;
+}				t_n;
 
-typedef struct		s_convspecs
+typedef struct	s_convspecs
 {
-	char			sign;		//	si num <= 0 nada por defecto, '+' un + (prioritario); ' ' espacio como signo
-	char			adj;		//	por defecto a la derecha, '-' a la izq
-	char			padd;		//	por defecto ' ', '0' solo si adjus dcha
-	char			alt;		//	nada por defecto, '#' añade puntos decimales si no los tiene, no elimina 0 finales con g, tb añade prefijos... ECHAR UN VISTAZO AL MAN
-	int				width;		//	mín nro de caractéres a imprimir
-	int				pre;		//	6 por defecto, precedida de un '.', número de dígitos decimales (e y f) o cifras significativas (g)
-	char			len;		//	nada por defecto, 'l' long, 'll' long long, 'h' short
-	char			spec;		//	tiene que haber una y solo una
-}					t_convspecs;
+	char			sign;
+	char			adj;
+	char			padd;
+	char			alt;
+	int				width;
+	int				pre;
+	char			len;
+	char			spec;
+}				t_convspecs;
 
-int			ft_asignn(t_n *current);
-t_convspecs	*ft_csinit(void);
-int			ft_spec_efg(t_convspecs *cs, long double f);
-char		*ft_itoax(unsigned int n, char x);
-char		*ft_litoax(unsigned long int n, char x);
-t_n			*ft_newn(t_n *prev, int nchr);
-int			ft_printf(const char *str, ...);
-void		ft_saven(t_n **n, va_list args, t_convspecs *cs);
-int			ft_spec_c(t_convspecs *cs, char c);
-int			ft_spec_u(t_convspecs *cs, unsigned long long int num);
-int			ft_spec_di(t_convspecs *cs, long long int num);
-int			ft_spec_o(t_convspecs *cs, unsigned long long int num);
-int			ft_spec_px(t_convspecs *cs, unsigned long long int num);
-int			ft_spec_s(t_convspecs *cs, char *s);
+int				ft_asignn(t_n *current);
+t_convspecs		*ft_csinit(void);
+void			ft_flager(const char **str, t_convspecs *cs);
+void			ft_lenth(const char **str, t_convspecs *cs);
+t_n				*ft_newn(t_n *prev, int nchr);
+int				ft_printer(t_convspecs *cs, char *s);
+int				ft_printf(const char *str, ...);
+void			ft_saven(t_n **n, va_list args, t_convspecs *cs);
+int				ft_spec_c(t_convspecs *cs, char c);
+int				ft_spec_u(t_convspecs *cs, unsigned long long int num);
+int				ft_spec_di(t_convspecs *cs, long long int num);
+int				ft_spec_efg(t_convspecs *cs, long double f);
+int				ft_spec_o(t_convspecs *cs, unsigned long long int num);
+int				ft_spec_px(t_convspecs *cs, unsigned long long int num);
+int				ft_spec_s(t_convspecs *cs, char *s);
+void			ft_width_pre(const char **str, t_convspecs *cs, va_list args);
 
 #endif

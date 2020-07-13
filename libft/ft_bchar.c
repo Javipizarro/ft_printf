@@ -6,7 +6,7 @@
 /*   By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/02 06:16:51 by jpizarro          #+#    #+#             */
-/*   Updated: 2020/07/02 06:38:37 by jpizarro         ###   ########.fr       */
+/*   Updated: 2020/07/13 15:09:48 by jpizarro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ void	ft_bchar(char *s, size_t len, char c)
 {
 	while (len-- > 0)
 		*(s++) = c;
-    *s = 0;
+	*s = 0;
 }
