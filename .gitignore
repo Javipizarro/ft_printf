@@ -1,5 +1,6 @@
 # My own
 main.c
+.vscode/*
 
 # Prerequisites
 *.d

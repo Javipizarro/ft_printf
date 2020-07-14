@@ -6,7 +6,7 @@
 #    By: jpizarro <jpizarro@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/25 16:15:52 by jpizarro          #+#    #+#              #
-#    Updated: 2020/07/13 19:02:48 by jpizarro         ###   ########.fr        #
+#    Updated: 2020/07/14 16:43:18 by jpizarro         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ $(NAME):	$(OBJ)
 
 all:		$(NAME)
 
+bonus	:	all
+
 clean:
 			$(RM) $(OBJ) $(OBJ_B)
 			$(MAKE) clean -C ./libft
@@ -44,4 +46,4 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY: all clean fclean re
+.PHONY: bonus all clean fclean re
