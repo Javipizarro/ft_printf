@@ -18,7 +18,7 @@
 **	of character read in nchr.
 */
 
-t_n			*ft_newn(t_n *prev, int nchr)
+t_n				*ft_newn(t_n *prev, int nchr)
 {
 	t_n		*new;
 
@@ -37,9 +37,9 @@ t_n			*ft_newn(t_n *prev, int nchr)
 **	pointed by arg and freeing the links as it goes.
 */
 
-int			ft_asignn(t_n *current)
+long long int	ft_asignn(t_n *current)
 {
-	int n;
+	long long int n;
 
 	n = current->nchr;
 	while (current->prev)
@@ -62,12 +62,12 @@ int			ft_asignn(t_n *current)
 **	counting in the new link the number of characters printed by ft_printf().
 */
 
-void		ft_saven(t_n **n, va_list args, t_convspecs *cs)
+void			ft_saven(t_n **n, va_list args, t_convspecs *cs)
 {
 	if (cs->len == 'H')
-		(*n)->arg = (long long int*)va_arg(args, signed char*);
+		(*n)->arg = (long long int*)va_arg(args, int*);
 	else if (cs->len == 'h')
-		(*n)->arg = (long long int*)va_arg(args, short int*);
+		(*n)->arg = (long long int*)va_arg(args, int*);
 	else if (!cs->len)
 		(*n)->arg = (long long int*)va_arg(args, int*);
 	else if (cs->len == 'l')

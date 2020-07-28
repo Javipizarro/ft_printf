@@ -37,7 +37,7 @@ typedef struct	s_convspecs
 	char			spec;
 }				t_convspecs;
 
-int				ft_asignn(t_n *current);
+long long int	ft_asignn(t_n *current);
 t_convspecs		*ft_csinit(void);
 void			ft_flager(const char **str, t_convspecs *cs);
 void			ft_lenth(const char **str, t_convspecs *cs);
